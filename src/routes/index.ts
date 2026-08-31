@@ -1,3 +1,7 @@
+/**
+ * API router.
+ * Aggregates all domain routers under the main API prefix.
+ */
 import { Router } from 'express';
 import { authRouter } from './auth.routes';
 import { categoryRouter } from './category.routes';

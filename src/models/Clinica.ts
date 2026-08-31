@@ -1,3 +1,7 @@
+/**
+ * Clinica model.
+ * Represents clinics with unique NIT and soft delete.
+ */
 import {
   CreationOptional,
   DataTypes,

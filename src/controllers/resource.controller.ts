@@ -1,3 +1,7 @@
+/**
+ * Resource controller.
+ * Handles HTTP layer for resource CRUD with ownership checks.
+ */
 import { Request, Response } from 'express';
 import { CreateResourceDto, ResourceQueryDto, UpdateResourceDto } from '../dto/resource.dto';
 import { ResourceStatus } from '../models/Resource';

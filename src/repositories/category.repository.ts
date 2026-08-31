@@ -1,3 +1,7 @@
+/**
+ * Category repository.
+ * Data access layer for Category entity.
+ */
 import { Category, Resource } from '../models';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dto/category.dto';
 
