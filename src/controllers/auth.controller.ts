@@ -1,3 +1,7 @@
+/**
+ * Auth controller.
+ * Handles HTTP layer for authentication: registration, login and profile.
+ */
 import { Request, Response } from 'express';
 import { LoginDto, RegisterDto } from '../dto/auth.dto';
 import { authService } from '../services/auth.service';

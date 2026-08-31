@@ -1,3 +1,7 @@
+/**
+ * Role-based authorization middleware.
+ * Allows only specified roles to access the route.
+ */
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors/AppError';
 import { Role } from '../models/User';

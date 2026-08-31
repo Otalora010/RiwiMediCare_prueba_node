@@ -1,3 +1,7 @@
+/**
+ * User service.
+ * Business logic for user management and role updates.
+ */
 import { AppError } from '../errors/AppError';
 import { userRepository } from '../repositories/user.repository';
 import { getPaginationMeta } from '../utils/pagination';

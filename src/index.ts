@@ -1,6 +1,6 @@
 /**
- * Punto de entrada de la aplicación.
- * Conecta PostgreSQL, sincroniza los modelos y levanta el servidor HTTP.
+ * Application entry point.
+ * Connects to PostgreSQL, syncs models and starts the HTTP server.
  */
 import app from './server';
 import { sequelize } from './config/database';

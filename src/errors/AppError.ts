@@ -1,3 +1,7 @@
+/**
+ * AppError class.
+ * Custom error with HTTP status, code and details.
+ */
 export class AppError extends Error {
   constructor(
     public readonly statusCode: number,

@@ -1,3 +1,7 @@
+/**
+ * Category routes.
+ * Defines category endpoints and OpenAPI documentation.
+ */
 import { Router } from 'express';
 import { CategoryController } from '../controllers/category.controller';
 import { authenticate } from '../middlewares/auth.middleware';

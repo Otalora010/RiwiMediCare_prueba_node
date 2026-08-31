@@ -1,3 +1,7 @@
+/**
+ * Validation middlewares.
+ * Direct validations without external libraries; each fails with VALIDATION_ERROR.
+ */
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors/AppError';
 import { ResourceStatus } from '../models/Resource';

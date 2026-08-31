@@ -1,3 +1,7 @@
+/**
+ * Resource routes.
+ * Defines resource endpoints and OpenAPI documentation.
+ */
 import { Router } from 'express';
 import { ResourceController } from '../controllers/resource.controller';
 import { authenticate } from '../middlewares/auth.middleware';

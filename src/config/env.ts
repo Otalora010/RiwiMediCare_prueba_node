@@ -1,3 +1,7 @@
+/**
+ * Environment variables loader.
+ * Parses and exposes typed configuration with sensible defaults.
+ */
 import 'dotenv/config';
 
 const numberValue = (value: string | undefined, fallback: number): number => {

@@ -1,3 +1,7 @@
+/**
+ * Clinica routes.
+ * Defines clinic endpoints and OpenAPI documentation.
+ */
 import { Router } from 'express';
 import { ClinicaController } from '../controllers/clinica.controller';
 import { authenticate } from '../middlewares/auth.middleware';

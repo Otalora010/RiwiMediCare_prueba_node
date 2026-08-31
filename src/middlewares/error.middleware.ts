@@ -1,3 +1,7 @@
+/**
+ * Error handling middlewares.
+ * Handles 404 and maps AppError / Sequelize errors to HTTP responses.
+ */
 import { ErrorRequestHandler, RequestHandler } from 'express';
 import {
   BaseError,

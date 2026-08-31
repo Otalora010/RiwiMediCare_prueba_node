@@ -1,6 +1,6 @@
 /**
- * Configura Express: middlewares, rutas y Swagger.
- * La conexión a PostgreSQL y app.listen se realizan en index.ts.
+ * Express configuration: middlewares, routes and Swagger.
+ * PostgreSQL connection and app.listen are handled in index.ts.
  */
 import cors from 'cors';
 import express from 'express';

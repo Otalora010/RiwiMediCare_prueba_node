@@ -1,3 +1,7 @@
+/**
+ * User routes.
+ * Defines user management endpoints and OpenAPI documentation.
+ */
 import { Router } from 'express';
 import { UserController } from '../controllers/user.controller';
 import { authenticate } from '../middlewares/auth.middleware';

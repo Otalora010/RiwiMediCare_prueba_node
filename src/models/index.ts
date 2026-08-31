@@ -1,3 +1,7 @@
+/**
+ * Model registry.
+ * Initializes associations between User, Clinica, Almacen, Category and Resource.
+ */
 import { Almacen } from './Almacen';
 import { Category } from './Category';
 import { Clinica } from './Clinica';

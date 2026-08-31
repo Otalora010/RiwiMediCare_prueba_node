@@ -1,3 +1,7 @@
+/**
+ * User model.
+ * Represents application users with role-based access (ADMIN/GESTOR).
+ */
 import {
   CreationOptional,
   DataTypes,

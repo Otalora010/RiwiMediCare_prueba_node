@@ -1,3 +1,7 @@
+/**
+ * Almacen repository.
+ * Data access layer for Almacen entity.
+ */
 import { CreateAlmacenDto, UpdateAlmacenDto } from '../dto/almacen.dto';
 import { Almacen, AlmacenEstado } from '../models/Almacen';
 

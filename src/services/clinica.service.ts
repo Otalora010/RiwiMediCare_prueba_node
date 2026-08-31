@@ -1,3 +1,7 @@
+/**
+ * Clinica service.
+ * Handles business rules: NIT uniqueness and soft delete.
+ */
 import { AppError } from '../errors/AppError';
 import { CreateClinicaDto, UpdateClinicaDto } from '../dto/clinica.dto';
 import { ClinicaEstado } from '../models/Clinica';

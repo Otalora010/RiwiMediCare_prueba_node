@@ -1,3 +1,7 @@
+/**
+ * Category service.
+ * Business logic for category CRUD.
+ */
 import { AppError } from '../errors/AppError';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dto/category.dto';
 import { categoryRepository } from '../repositories/category.repository';

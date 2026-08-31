@@ -1,3 +1,7 @@
+/**
+ * Almacen routes.
+ * Defines warehouse endpoints and OpenAPI documentation.
+ */
 import { Router } from 'express';
 import { AlmacenController } from '../controllers/almacen.controller';
 import { authenticate } from '../middlewares/auth.middleware';

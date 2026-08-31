@@ -1,3 +1,7 @@
+/**
+ * Auth service.
+ * Business logic for authentication and session creation.
+ */
 import { AppError } from '../errors/AppError';
 import { LoginDto, RegisterDto } from '../dto/auth.dto';
 import { Role, User } from '../models/User';
@@ -15,7 +19,9 @@ const toPublicUser = (user: User) => ({
   updatedAt: user.updatedAt,
 });
 
-/** Centraliza registro, credenciales y emisión de JWT. */
+/**
+ * Centralizes registration, credential validation and JWT issuance.
+ */
 export class AuthService {
   async register(input: RegisterDto) {
     const existing = await userRepository.findByEmail(input.email);

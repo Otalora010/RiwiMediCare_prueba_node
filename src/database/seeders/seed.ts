@@ -1,3 +1,7 @@
+/**
+ * Database seeder.
+ * Populates initial users and reference data.
+ */
 import { sequelize } from '../../config/database';
 import { env } from '../../config/env';
 import { Category, Resource, User } from '../../models';

@@ -1,3 +1,7 @@
+/**
+ * Authentication middleware.
+ * Validates Bearer JWT and populates req.auth, otherwise throws UNAUTHENTICATED.
+ */
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors/AppError';
 import { verifyAccessToken } from '../utils/jwt';

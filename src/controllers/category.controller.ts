@@ -1,3 +1,7 @@
+/**
+ * Category controller.
+ * Handles HTTP layer for category CRUD operations.
+ */
 import { Request, Response } from 'express';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dto/category.dto';
 import { categoryService } from '../services/category.service';

@@ -1,3 +1,7 @@
+/**
+ * Swagger/OpenAPI configuration.
+ * Generates spec from JSDoc routes.
+ */
 import path from 'node:path';
 import swaggerJsdoc from 'swagger-jsdoc';
 import { env } from '../config/env';

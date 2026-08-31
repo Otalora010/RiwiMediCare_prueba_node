@@ -1,3 +1,7 @@
+/**
+ * Resource service.
+ * Business rules and ownership checks for resources.
+ */
 import { AppError } from '../errors/AppError';
 import { CreateResourceDto, ResourceQueryDto, UpdateResourceDto } from '../dto/resource.dto';
 import { Role } from '../models/User';
@@ -10,7 +14,9 @@ interface Actor {
   role: Role;
 }
 
-/** Contiene reglas de negocio; no conoce Request ni Response. */
+/**
+ * Contains business rules; does not depend on Request or Response.
+ */
 export class ResourceService {
   async create(input: CreateResourceDto, ownerId: string) {
     if (!(await categoryRepository.findById(input.categoryId))) {

@@ -1,3 +1,7 @@
+/**
+ * Almacen service.
+ * Business logic for warehouse management with soft delete.
+ */
 import { AppError } from '../errors/AppError';
 import { CreateAlmacenDto, UpdateAlmacenDto } from '../dto/almacen.dto';
 import { AlmacenEstado } from '../models/Almacen';
