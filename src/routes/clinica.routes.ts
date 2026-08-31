@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ClinicaController } from '../controllers/clinica.controller';
+import { SolicitudController } from '../controllers/solicitud.controller';
 import { authenticate } from '../middlewares/auth.middleware';
 import { authorize } from '../middlewares/role.middleware';
 import { validateClinica, validateId } from '../middlewares/validation.middleware';
@@ -71,6 +72,21 @@ clinicaRouter
  *     responses:
  *       204: { description: Clínica eliminada }
  */
+/**
+ * @openapi
+ * /clinicas/{id}/solicitudes:
+ *   get:
+ *     tags: [Clinicas]
+ *     summary: Historial de solicitudes por clínica
+ *     security: [{ bearerAuth: [] }]
+ *     parameters:
+ *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+ *     responses:
+ *       200: { description: Historial por clínica }
+ *       404: { $ref: '#/components/responses/NotFound' }
+ */
+clinicaRouter.get('/:id/solicitudes', authenticate, validateId, SolicitudController.listByClinica);
+
 clinicaRouter
   .route('/:id')
   .get(authenticate, validateId, ClinicaController.getById)
