@@ -10,8 +10,8 @@ export class UserRepository {
     return User.findByPk(id);
   }
 
-  create(data: Pick<User, 'name' | 'email' | 'password'>): Promise<User> {
-    return User.create(data);
+  create(data: Pick<User, 'name' | 'email' | 'password'> & { role?: User['role'] }): Promise<User> {
+    return User.create(data as unknown as Pick<User, 'name' | 'email' | 'password'>);
   }
 
   async findAll(page: number, limit: number) {

@@ -18,7 +18,7 @@ export const validateId = (req: Request, _res: Response, next: NextFunction): vo
 };
 
 export const validateRegister = (req: Request, _res: Response, next: NextFunction): void => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   if (typeof name !== 'string' || name.trim().length < 2) {
     next(fail('El nombre debe tener mínimo 2 caracteres'));
     return;
@@ -37,6 +37,10 @@ export const validateRegister = (req: Request, _res: Response, next: NextFunctio
     next(fail('La contraseña debe tener 8 caracteres, mayúscula, minúscula y número'));
     return;
   }
+  if (role !== undefined && !Object.values(Role).includes(role)) {
+    next(fail('El rol debe ser ADMIN o GESTOR'));
+    return;
+  }
   req.body.name = name.trim();
   req.body.email = email.trim().toLowerCase();
   next();
@@ -49,6 +53,31 @@ export const validateLogin = (req: Request, _res: Response, next: NextFunction):
     return;
   }
   req.body.email = email.trim().toLowerCase();
+  next();
+};
+
+export const validateClinica = (req: Request, _res: Response, next: NextFunction): void => {
+  const isUpdate = req.method === 'PATCH';
+  const { name, nit, responsable } = req.body;
+  if (isUpdate && Object.keys(req.body).length === 0) {
+    next(fail('Debes enviar al menos un campo'));
+    return;
+  }
+  if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
+    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if ((!isUpdate || nit !== undefined) && (typeof nit !== 'string' || nit.trim().length < 3)) {
+    next(fail('El NIT debe tener mínimo 3 caracteres'));
+    return;
+  }
+  if ((!isUpdate || responsable !== undefined) && (typeof responsable !== 'string' || responsable.trim().length < 2)) {
+    next(fail('El responsable debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if (typeof name === 'string') req.body.name = name.trim();
+  if (typeof nit === 'string') req.body.nit = nit.trim();
+  if (typeof responsable === 'string') req.body.responsable = responsable.trim();
   next();
 };
 

@@ -6,9 +6,9 @@ export const swaggerSpec = swaggerJsdoc({
   definition: {
     openapi: '3.0.3',
     info: {
-      title: 'Backend Exam Template API',
+      title: 'RiwiMediCare Plus API',
       version: '1.0.0',
-      description: 'Plantilla adaptable: reemplaza Category y Resource por las entidades del enunciado.',
+      description: 'API para gestión de solicitudes de abastecimiento de medicamentos e insumos médicos.',
     },
     servers: [{ url: `http://localhost:${env.PORT}${env.API_PREFIX}` }],
     components: {
@@ -23,6 +23,7 @@ export const swaggerSpec = swaggerJsdoc({
             name: { type: 'string', example: 'Ana Pérez' },
             email: { type: 'string', format: 'email', example: 'ana@example.com' },
             password: { type: 'string', format: 'password', example: 'Clave123*' },
+            role: { type: 'string', enum: ['ADMIN', 'GESTOR'], example: 'GESTOR' },
           },
         },
         Login: {
@@ -31,6 +32,16 @@ export const swaggerSpec = swaggerJsdoc({
           properties: {
             email: { type: 'string', format: 'email', example: 'admin@example.com' },
             password: { type: 'string', format: 'password', example: 'Admin123*' },
+          },
+        },
+        ClinicaInput: {
+          type: 'object',
+          required: ['name', 'nit', 'responsable'],
+          properties: {
+            name: { type: 'string', example: 'Clínica Central' },
+            nit: { type: 'string', example: '900123456-1' },
+            responsable: { type: 'string', example: 'Dra. Laura Gómez' },
+            estado: { type: 'string', enum: ['ACTIVA', 'ELIMINADA'] },
           },
         },
         CategoryInput: {
