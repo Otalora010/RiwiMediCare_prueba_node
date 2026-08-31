@@ -1,7 +1,7 @@
 # RiwiMediCare Plus API
 
-**Coder:** Santiago Otalora — **Clan:** node_nest  
-**Repository:** https://github.com/Otalora010/RiwiMediCare_prueba_node (public)
+**Coder:** Santiago Otalora — ** node_nest  
+**Repository:** https://github.com/Otalora010/RiwiMediCare_prueba_node 
 
 REST API to manage medication and medical-supply replenishment requests. It replaces the manual process (emails and spreadsheets) used by RiwiMediCare Plus, which distributes to clinics and care centers.
 
@@ -51,15 +51,15 @@ Request → Routes → Middlewares → Controllers → Services → Repositories
 
 | Action | ADMIN | GESTOR | Authenticated |
 |---|---:|---:|---:|
-| CRUD Clinica (POST/PATCH/DELETE) | ✓ | ✗ | — |
-| GET Clinicas | ✓ | ✓ | ✓ |
-| CRUD Almacen | ✓ | ✗ | — |
-| CRUD Medicamento | ✓ | ✗ | — |
-| POST Solicitud | ✓ | ✓ | — |
-| PUT Solicitud estado | ✓ | ✓ | — |
-| GET activas / historial / by clinica / by id | ✓ | ✓ | ✓ |
-| DELETE Solicitud (logical) | ✓ | ✗ | — |
-| POST /api/seed/upload | ✓ | ✗ | — |
+| CRUD Clinica (POST/PATCH/DELETE) |
+| GET Clinicas | 
+| CRUD Almacen |
+| CRUD Medicamento |
+| POST Solicitud | 
+| PUT Solicitud estado 
+| GET activas / historial / by clinica / by id
+| DELETE Solicitud (logical) 
+| POST /api/seed/upload 
 
 `POST /api/auth/register` is public and the user chooses its own role (`ADMIN` or `GESTOR`). Login is public. Everything else requires a `Bearer` JWT.
 
@@ -182,13 +182,6 @@ docker compose up --build -d
 docker compose logs -f api
 # Swagger -> http://localhost:3003/api/docs/ (con / final)
 # health   -> http://localhost:3003/health
-```
-
-Si `3003` también está ocupado, usa otro sin editar archivos:
-```bash
-HOST_PORT=4000 docker compose up --build -d
-# Swagger -> http://localhost:4000/api/docs/
-# o: HOST_PORT=4000 npm run docker:up
 ```
 
 O define `HOST_PORT=3003` en tu `.env`. Verifica puertos: `ss -tulpn | grep -E '3000|3001|3002|3003'`.
