@@ -148,6 +148,30 @@ export const validateAlmacen = (req: Request, _res: Response, next: NextFunction
   next();
 };
 
+export const validateMedicamento = (req: Request, _res: Response, next: NextFunction): void => {
+  const isUpdate = req.method === 'PATCH';
+  const { name, stock, almacenId } = req.body;
+  if (isUpdate && Object.keys(req.body).length === 0) {
+    next(fail('Debes enviar al menos un campo'));
+    return;
+  }
+  if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
+    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if ((!isUpdate || stock !== undefined) && (!Number.isFinite(Number(stock)) || Number(stock) < 0)) {
+    next(fail('El stock debe ser un número mayor o igual a cero'));
+    return;
+  }
+  if ((!isUpdate || almacenId !== undefined) && !uuidRegex.test(String(almacenId))) {
+    next(fail('almacenId debe ser un UUID válido'));
+    return;
+  }
+  if (typeof name === 'string') req.body.name = name.trim();
+  if (stock !== undefined) req.body.stock = Number(stock);
+  next();
+};
+
 export const validateRole = (req: Request, _res: Response, next: NextFunction): void => {
   if (!Object.values(Role).includes(req.body.role)) {
     next(fail('El rol debe ser ADMIN o GESTOR'));

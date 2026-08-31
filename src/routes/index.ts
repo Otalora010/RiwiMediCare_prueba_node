@@ -3,6 +3,7 @@ import { almacenRouter } from './almacen.routes';
 import { authRouter } from './auth.routes';
 import { categoryRouter } from './category.routes';
 import { clinicaRouter } from './clinica.routes';
+import { medicamentoRouter } from './medicamento.routes';
 import { resourceRouter } from './resource.routes';
 import { userRouter } from './user.routes';
 
@@ -13,4 +14,5 @@ apiRouter.use('/users', userRouter);
 apiRouter.use('/categories', categoryRouter);
 apiRouter.use('/clinicas', clinicaRouter);
 apiRouter.use('/almacenes', almacenRouter);
+apiRouter.use('/medicamentos', medicamentoRouter);
 apiRouter.use('/resources', resourceRouter);
