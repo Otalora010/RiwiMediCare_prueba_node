@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: exam-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-exam_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    # PostgreSQL escucha en 5432 dentro del contenedor.
+    # 5436 es únicamente el puerto expuesto en el equipo host.
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-exam_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    container_name: exam-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      API_PREFIX: /api
+      POSTGRES_HOST: db
+      # La API se conecta por la red interna: db:5432.
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-exam_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      DB_LOGGING: "false"
+      DB_SYNC: "true"
+      JWT_SECRET: ${JWT_SECRET:-replace-this-secret-before-production-123456}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-4h}
+      BCRYPT_ROUNDS: 10
+      CORS_ORIGIN: "*"
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:

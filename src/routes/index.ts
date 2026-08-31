@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { authRouter } from './auth.routes';
+import { categoryRouter } from './category.routes';
+import { resourceRouter } from './resource.routes';
+import { userRouter } from './user.routes';
+
+export const apiRouter = Router();
+
+apiRouter.use('/auth', authRouter);
+apiRouter.use('/users', userRouter);
+apiRouter.use('/categories', categoryRouter);
+apiRouter.use('/resources', resourceRouter);
