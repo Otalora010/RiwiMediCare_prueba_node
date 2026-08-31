@@ -27,7 +27,7 @@ async function seed(): Promise<void> {
         name: 'Usuario de prueba',
         email: 'user@example.com',
         password: await hashPassword('User123*'),
-        role: Role.USER,
+        role: Role.GESTOR,
         isActive: true,
       },
     });
@@ -66,7 +66,7 @@ async function seed(): Promise<void> {
 
     console.log('Seed completado');
     console.log(`ADMIN: ${env.ADMIN_EMAIL} / ${env.ADMIN_PASSWORD}`);
-    console.log('USER: user@example.com / User123*');
+    console.log('GESTOR: user@example.com / User123*');
   } catch (error) {
     console.error('Error ejecutando el seed:', error);
     process.exitCode = 1;
