@@ -1,3 +1,7 @@
+/**
+ * Solicitud repository.
+ * Data access layer for Solicitud entity.
+ */
 import { Op } from 'sequelize';
 import { CreateSolicitudDto } from '../dto/solicitud.dto';
 import { Almacen } from '../models/Almacen';

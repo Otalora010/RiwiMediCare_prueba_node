@@ -1,3 +1,7 @@
+/**
+ * Category model.
+ * Groups resources under a shared category.
+ */
 import {
   CreationOptional,
   DataTypes,

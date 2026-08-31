@@ -1,3 +1,7 @@
+/**
+ * Solicitud service.
+ * Business logic for supply requests, stock checks and state transitions.
+ */
 import { AppError } from '../errors/AppError';
 import { CreateSolicitudDto } from '../dto/solicitud.dto';
 import { ClinicaEstado } from '../models/Clinica';
@@ -20,26 +24,26 @@ const estadosValidosUpdate = [
 export class SolicitudService {
   async create(input: CreateSolicitudDto, userId: string) {
     if (!Number.isFinite(input.cantidadSolicitada) || input.cantidadSolicitada <= 0) {
-      throw new AppError(400, 'La cantidad solicitada debe ser mayor que cero', 'VALIDATION_ERROR');
+      throw new AppError(400, 'Requested quantity must be greater than zero', 'VALIDATION_ERROR');
     }
 
     const clinica = await clinicaRepository.findById(input.clinicaId);
     if (!clinica || clinica.estado === ClinicaEstado.ELIMINADA) {
-      throw new AppError(404, 'Clínica no encontrada', 'CLINICA_NOT_FOUND');
+      throw new AppError(404, 'Clinic not found', 'CLINICA_NOT_FOUND');
     }
 
     const medicamento = await medicamentoRepository.findById(input.medicamentoId);
     if (!medicamento || medicamento.estado === MedicamentoEstado.ELIMINADO) {
-      throw new AppError(404, 'Medicamento no encontrado', 'MEDICAMENTO_NOT_FOUND');
+      throw new AppError(404, 'Medication not found', 'MEDICAMENTO_NOT_FOUND');
     }
 
     const almacen = await almacenRepository.findById(input.almacenId);
     if (!almacen || (almacen as unknown as { estado: string }).estado === AlmacenEstado.ELIMINADO) {
-      throw new AppError(404, 'Almacén no encontrado', 'ALMACEN_NOT_FOUND');
+      throw new AppError(404, 'Warehouse not found', 'ALMACEN_NOT_FOUND');
     }
 
     if (String(medicamento.almacenId) !== String(input.almacenId)) {
-      throw new AppError(400, 'El medicamento no pertenece al almacén indicado', 'VALIDATION_ERROR');
+      throw new AppError(400, 'Medication does not belong to the specified warehouse', 'VALIDATION_ERROR');
     }
 
     if (medicamento.stock < input.cantidadSolicitada) {
@@ -47,7 +51,7 @@ export class SolicitudService {
     }
 
     if (input.estado && input.estado !== SolicitudEstado.PENDIENTE) {
-      throw new AppError(400, 'El estado inicial debe ser PENDIENTE', 'VALIDATION_ERROR');
+      throw new AppError(400, 'Initial status must be PENDING', 'VALIDATION_ERROR');
     }
 
     return solicitudRepository.create({ ...input, userId, estado: SolicitudEstado.PENDIENTE });
@@ -55,9 +59,9 @@ export class SolicitudService {
 
   async getById(id: string) {
     const solicitud = await solicitudRepository.findById(id);
-    if (!solicitud) throw new AppError(404, 'Solicitud no encontrada', 'SOLICITUD_NOT_FOUND');
+    if (!solicitud) throw new AppError(404, 'Request not found', 'SOLICITUD_NOT_FOUND');
     if (solicitud.estado === SolicitudEstado.ELIMINADA) {
-      throw new AppError(404, 'Solicitud no encontrada', 'SOLICITUD_NOT_FOUND');
+      throw new AppError(404, 'Request not found', 'SOLICITUD_NOT_FOUND');
     }
     return solicitud;
   }
@@ -73,14 +77,14 @@ export class SolicitudService {
   async listByClinica(clinicaId: string) {
     const clinica = await clinicaRepository.findById(clinicaId);
     if (!clinica || clinica.estado === ClinicaEstado.ELIMINADA) {
-      throw new AppError(404, 'Clínica no encontrada', 'CLINICA_NOT_FOUND');
+      throw new AppError(404, 'Clinic not found', 'CLINICA_NOT_FOUND');
     }
     return solicitudRepository.findByClinica(clinicaId);
   }
 
   async updateEstado(id: string, nuevoEstado: SolicitudEstado) {
     if (!Object.values(estadosValidosUpdate).includes(nuevoEstado as unknown as typeof estadosValidosUpdate[number])) {
-      throw new AppError(400, `El estado debe ser uno de: ${estadosValidosUpdate.join(', ')}`, 'VALIDATION_ERROR');
+      throw new AppError(400, `Status must be one of: ${estadosValidosUpdate.join(', ')}`, 'VALIDATION_ERROR');
     }
     const solicitud = await this.getById(id);
     return solicitudRepository.updateEstado(solicitud, nuevoEstado);

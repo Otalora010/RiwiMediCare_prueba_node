@@ -1,3 +1,7 @@
+/**
+ * Category service.
+ * Business logic for category CRUD.
+ */
 import { AppError } from '../errors/AppError';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dto/category.dto';
 import { categoryRepository } from '../repositories/category.repository';
@@ -13,7 +17,7 @@ export class CategoryService {
 
   async getById(id: string) {
     const category = await categoryRepository.findById(id);
-    if (!category) throw new AppError(404, 'Categoría no encontrada', 'CATEGORY_NOT_FOUND');
+    if (!category) throw new AppError(404, 'Category not found', 'CATEGORY_NOT_FOUND');
     return category;
   }
 
@@ -27,7 +31,7 @@ export class CategoryService {
     if ((await categoryRepository.countResources(id)) > 0) {
       throw new AppError(
         409,
-        'No puedes eliminar una categoría que contiene recursos',
+        'Cannot delete a category that contains resources',
         'CATEGORY_IN_USE',
       );
     }

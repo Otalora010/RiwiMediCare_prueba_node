@@ -1,3 +1,7 @@
+/**
+ * User controller.
+ * Handles HTTP layer for user listing and role management.
+ */
 import { Request, Response } from 'express';
 import { Role } from '../models/User';
 import { userService } from '../services/user.service';

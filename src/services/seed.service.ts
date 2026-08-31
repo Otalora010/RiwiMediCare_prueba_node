@@ -1,3 +1,7 @@
+/**
+ * Seed service.
+ * Handles bulk import of users, clinics, warehouses and medications.
+ */
 import { AppError } from '../errors/AppError';
 import { Clinica } from '../models/Clinica';
 import { Almacen } from '../models/Almacen';
@@ -104,12 +108,12 @@ export class SeedService {
       const text = buffer.toString('utf-8');
       const json = JSON.parse(text) as SeedPayload;
       if (typeof json !== 'object' || json === null) {
-        throw new AppError(400, 'El JSON debe ser un objeto con claves usuarios, clinicas, almacenes, medicamentos', 'VALIDATION_ERROR');
+        throw new AppError(400, 'JSON must be an object with keys usuarios, clinicas, almacenes, medicamentos', 'VALIDATION_ERROR');
       }
       return json;
     } catch (err) {
       if (err instanceof AppError) throw err;
-      throw new AppError(400, 'El archivo no es un JSON válido', 'VALIDATION_ERROR');
+      throw new AppError(400, 'File is not valid JSON', 'VALIDATION_ERROR');
     }
   }
 }

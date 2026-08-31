@@ -9,10 +9,10 @@
   ],
   "almacenes": [
     {
-      "name": "Almacén Central",
-      "location": "Bogotá - Sede Norte",
+      "name": "Central Warehouse",
+      "location": "Bogota - North Branch",
       "medicamentos": [
-        { "name": "Acetaminofén 500mg", "stock": 200 },
+        { "name": "Acetaminophen 500mg", "stock": 200 },
         { "name": "Ibuprofeno 400mg", "stock": 150 }
       ]
     },

@@ -1,3 +1,7 @@
+/**
+ * Resource DTOs.
+ * Input shapes for resource creation, update and queries.
+ */
 import { ResourceStatus } from '../models/Resource';
 
 export interface CreateResourceDto {

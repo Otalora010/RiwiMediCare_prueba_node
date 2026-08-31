@@ -1,3 +1,7 @@
+/**
+ * Password utilities.
+ * Hashing and comparison using bcryptjs.
+ */
 import bcrypt from 'bcryptjs';
 import { env } from '../config/env';
 
