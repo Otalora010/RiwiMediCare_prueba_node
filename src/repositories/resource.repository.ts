@@ -1,3 +1,7 @@
+/**
+ * Resource repository.
+ * Data access layer for Resource with filtering and pagination.
+ */
 import { Op, WhereOptions } from 'sequelize';
 import { CreateResourceDto, ResourceQueryDto, UpdateResourceDto } from '../dto/resource.dto';
 import { Category, Resource, User } from '../models';

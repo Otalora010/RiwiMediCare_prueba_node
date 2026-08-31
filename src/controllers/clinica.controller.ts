@@ -1,3 +1,7 @@
+/**
+ * Clinica controller.
+ * Handles HTTP layer for clinic CRUD operations.
+ */
 import { Request, Response } from 'express';
 import { CreateClinicaDto, UpdateClinicaDto } from '../dto/clinica.dto';
 import { clinicaService } from '../services/clinica.service';

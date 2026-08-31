@@ -1,3 +1,7 @@
+/**
+ * Auth DTOs.
+ * Input shapes for registration and login.
+ */
 export interface RegisterDto {
   name: string;
   email: string;
