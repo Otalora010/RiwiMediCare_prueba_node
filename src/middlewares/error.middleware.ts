@@ -13,6 +13,14 @@ export const notFoundHandler: RequestHandler = (req, _res, next) => {
 };
 
 export const errorHandler: ErrorRequestHandler = (error, _req, res, _next): void => {
+  if (error && typeof error === 'object' && 'code' in error && (error as { code: string }).code === 'LIMIT_FILE_SIZE') {
+    res.status(400).json({
+      success: false,
+      error: { code: 'FILE_TOO_LARGE', message: 'El archivo excede el tamaño máximo (5MB)' },
+    });
+    return;
+  }
+
   if (error instanceof AppError) {
     res.status(error.statusCode).json({
       success: false,

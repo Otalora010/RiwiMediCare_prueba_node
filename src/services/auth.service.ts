@@ -22,7 +22,8 @@ export class AuthService {
     if (existing) throw new AppError(409, 'El correo ya está registrado', 'EMAIL_IN_USE');
 
     const password = await hashPassword(input.password);
-    const user = await userRepository.create({ ...input, password });
+    const role = input.role && Object.values(Role).includes(input.role as Role) ? (input.role as Role) : Role.GESTOR;
+    const user = await userRepository.create({ name: input.name, email: input.email, password, role } as unknown as Pick<User, 'name' | 'email' | 'password'> & { role: Role });
     return this.buildSession(user);
   }
 

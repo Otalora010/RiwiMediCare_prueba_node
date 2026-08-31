@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors/AppError';
 import { ResourceStatus } from '../models/Resource';
+import { SolicitudEstado } from '../models/Solicitud';
 import { Role } from '../models/User';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,7 +19,7 @@ export const validateId = (req: Request, _res: Response, next: NextFunction): vo
 };
 
 export const validateRegister = (req: Request, _res: Response, next: NextFunction): void => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   if (typeof name !== 'string' || name.trim().length < 2) {
     next(fail('El nombre debe tener mínimo 2 caracteres'));
     return;
@@ -37,6 +38,10 @@ export const validateRegister = (req: Request, _res: Response, next: NextFunctio
     next(fail('La contraseña debe tener 8 caracteres, mayúscula, minúscula y número'));
     return;
   }
+  if (role !== undefined && !Object.values(Role).includes(role)) {
+    next(fail('El rol debe ser ADMIN o GESTOR'));
+    return;
+  }
   req.body.name = name.trim();
   req.body.email = email.trim().toLowerCase();
   next();
@@ -49,6 +54,31 @@ export const validateLogin = (req: Request, _res: Response, next: NextFunction):
     return;
   }
   req.body.email = email.trim().toLowerCase();
+  next();
+};
+
+export const validateClinica = (req: Request, _res: Response, next: NextFunction): void => {
+  const isUpdate = req.method === 'PATCH';
+  const { name, nit, responsable } = req.body;
+  if (isUpdate && Object.keys(req.body).length === 0) {
+    next(fail('Debes enviar al menos un campo'));
+    return;
+  }
+  if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
+    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if ((!isUpdate || nit !== undefined) && (typeof nit !== 'string' || nit.trim().length < 3)) {
+    next(fail('El NIT debe tener mínimo 3 caracteres'));
+    return;
+  }
+  if ((!isUpdate || responsable !== undefined) && (typeof responsable !== 'string' || responsable.trim().length < 2)) {
+    next(fail('El responsable debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if (typeof name === 'string') req.body.name = name.trim();
+  if (typeof nit === 'string') req.body.nit = nit.trim();
+  if (typeof responsable === 'string') req.body.responsable = responsable.trim();
   next();
 };
 
@@ -99,9 +129,91 @@ export const validateResource = (req: Request, _res: Response, next: NextFunctio
   next();
 };
 
+export const validateAlmacen = (req: Request, _res: Response, next: NextFunction): void => {
+  const isUpdate = req.method === 'PATCH';
+  const { name, location } = req.body;
+  if (isUpdate && Object.keys(req.body).length === 0) {
+    next(fail('Debes enviar al menos un campo'));
+    return;
+  }
+  if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
+    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if ((!isUpdate || location !== undefined) && (typeof location !== 'string' || location.trim().length < 2)) {
+    next(fail('La ubicación debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if (typeof name === 'string') req.body.name = name.trim();
+  if (typeof location === 'string') req.body.location = location.trim();
+  next();
+};
+
+export const validateMedicamento = (req: Request, _res: Response, next: NextFunction): void => {
+  const isUpdate = req.method === 'PATCH';
+  const { name, stock, almacenId } = req.body;
+  if (isUpdate && Object.keys(req.body).length === 0) {
+    next(fail('Debes enviar al menos un campo'));
+    return;
+  }
+  if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
+    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if ((!isUpdate || stock !== undefined) && (!Number.isFinite(Number(stock)) || Number(stock) < 0)) {
+    next(fail('El stock debe ser un número mayor o igual a cero'));
+    return;
+  }
+  if ((!isUpdate || almacenId !== undefined) && !uuidRegex.test(String(almacenId))) {
+    next(fail('almacenId debe ser un UUID válido'));
+    return;
+  }
+  if (typeof name === 'string') req.body.name = name.trim();
+  if (stock !== undefined) req.body.stock = Number(stock);
+  next();
+};
+
+export const validateSolicitud = (req: Request, _res: Response, next: NextFunction): void => {
+  const { clinicaId, medicamentoId, almacenId, cantidadSolicitada } = req.body;
+  if (typeof clinicaId !== 'string' || !uuidRegex.test(clinicaId)) {
+    next(fail('clinicaId debe ser un UUID válido'));
+    return;
+  }
+  if (typeof medicamentoId !== 'string' || !uuidRegex.test(medicamentoId)) {
+    next(fail('medicamentoId debe ser un UUID válido'));
+    return;
+  }
+  if (typeof almacenId !== 'string' || !uuidRegex.test(almacenId)) {
+    next(fail('almacenId debe ser un UUID válido'));
+    return;
+  }
+  if (!Number.isFinite(Number(cantidadSolicitada)) || Number(cantidadSolicitada) <= 0) {
+    next(fail('cantidadSolicitada debe ser un número mayor que cero'));
+    return;
+  }
+  req.body.cantidadSolicitada = Number(cantidadSolicitada);
+  next();
+};
+
+export const validateSolicitudEstado = (req: Request, _res: Response, next: NextFunction): void => {
+  const { estado } = req.body;
+  const allowed = [
+    SolicitudEstado.PENDIENTE,
+    SolicitudEstado.APROBADA,
+    SolicitudEstado.RECHAZADA,
+    SolicitudEstado.DESPACHADA,
+    SolicitudEstado.CANCELADA,
+  ];
+  if (typeof estado !== 'string' || !allowed.includes(estado as SolicitudEstado)) {
+    next(fail(`El estado debe ser uno de: ${allowed.join(', ')}`));
+    return;
+  }
+  next();
+};
+
 export const validateRole = (req: Request, _res: Response, next: NextFunction): void => {
   if (!Object.values(Role).includes(req.body.role)) {
-    next(fail('El rol debe ser ADMIN o USER'));
+    next(fail('El rol debe ser ADMIN o GESTOR'));
     return;
   }
   next();

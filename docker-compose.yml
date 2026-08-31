@@ -1,14 +1,13 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: exam-postgres
+    container_name: riwimedicare-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-exam_db}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    # PostgreSQL escucha en 5432 dentro del contenedor.
-    # 5436 es únicamente el puerto expuesto en el equipo host.
+    # PostgreSQL 5432 interno, 5436 expuesto en host para no chocar con instancia local
     ports:
       - "5436:5432"
     volumes:
@@ -21,7 +20,7 @@ services:
 
   api:
     build: .
-    container_name: exam-api
+    container_name: riwimedicare-api
     restart: unless-stopped
     depends_on:
       db:
@@ -31,7 +30,6 @@ services:
       PORT: 3000
       API_PREFIX: /api
       POSTGRES_HOST: db
-      # La API se conecta por la red interna: db:5432.
       POSTGRES_PORT: 5432
       POSTGRES_DB: ${POSTGRES_DB:-exam_db}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
