@@ -18,7 +18,7 @@ export const categoryRouter = Router();
  *     tags: [Categories]
  *     summary: Lista categorías
  *     responses:
- *       200: { description: Categorías con cantidad de recursos }
+ *       200: { description: Categories with resource count }
  *   post:
  *     tags: [Categories]
  *     summary: Crea una categoría (solo ADMIN)
@@ -29,7 +29,7 @@ export const categoryRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/CategoryInput' }
  *     responses:
- *       201: { description: Categoría creada }
+ *       201: { description: Category created }
  */
 categoryRouter
   .route('/')
@@ -45,7 +45,7 @@ categoryRouter
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Categoría encontrada }
+ *       200: { description: Category found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Categories]
@@ -58,7 +58,7 @@ categoryRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/CategoryInput' }
  *     responses:
- *       200: { description: Categoría actualizada }
+ *       200: { description: Category updated }
  *   delete:
  *     tags: [Categories]
  *     summary: Elimina una categoría vacía (solo ADMIN)
@@ -66,7 +66,7 @@ categoryRouter
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Categoría eliminada }
+ *       204: { description: Category deleted }
  *       409: { description: La categoría contiene recursos }
  */
 categoryRouter

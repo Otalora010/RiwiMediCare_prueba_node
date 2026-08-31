@@ -10,7 +10,7 @@ import { clinicaRepository } from '../repositories/clinica.repository';
 export class ClinicaService {
   async create(input: CreateClinicaDto) {
     const existing = await clinicaRepository.findByNit(input.nit);
-    if (existing) throw new AppError(409, 'Ya existe una clínica con ese NIT', 'NIT_IN_USE');
+    if (existing) throw new AppError(409, 'Clinic with this NIT already exists', 'NIT_IN_USE');
     return clinicaRepository.create(input);
   }
 
@@ -20,9 +20,9 @@ export class ClinicaService {
 
   async getById(id: string) {
     const clinica = await clinicaRepository.findById(id);
-    if (!clinica) throw new AppError(404, 'Clínica no encontrada', 'CLINICA_NOT_FOUND');
+    if (!clinica) throw new AppError(404, 'Clinic not found', 'CLINICA_NOT_FOUND');
     if (clinica.estado === ClinicaEstado.ELIMINADA) {
-      throw new AppError(404, 'Clínica no encontrada', 'CLINICA_NOT_FOUND');
+      throw new AppError(404, 'Clinic not found', 'CLINICA_NOT_FOUND');
     }
     return clinica;
   }
@@ -31,7 +31,7 @@ export class ClinicaService {
     const clinica = await this.getById(id);
     if (input.nit && input.nit !== clinica.nit) {
       const existing = await clinicaRepository.findByNit(input.nit);
-      if (existing) throw new AppError(409, 'Ya existe una clínica con ese NIT', 'NIT_IN_USE');
+      if (existing) throw new AppError(409, 'Clinic with this NIT already exists', 'NIT_IN_USE');
     }
     return clinicaRepository.update(clinica, input);
   }

@@ -37,7 +37,7 @@ export const resourceRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ResourceInput' }
  *     responses:
- *       201: { description: Recurso creado }
+ *       201: { description: Resource created }
  */
 resourceRouter
   .route('/')
@@ -53,7 +53,7 @@ resourceRouter
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Recurso encontrado }
+ *       200: { description: Resource found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Resources]
@@ -66,7 +66,7 @@ resourceRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ResourceInput' }
  *     responses:
- *       200: { description: Recurso actualizado }
+ *       200: { description: Resource updated }
  *       403: { $ref: '#/components/responses/Forbidden' }
  *   delete:
  *     tags: [Resources]
@@ -75,7 +75,7 @@ resourceRouter
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Recurso eliminado }
+ *       204: { description: Resource deleted }
  */
 resourceRouter
   .route('/:id')

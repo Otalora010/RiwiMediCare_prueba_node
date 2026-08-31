@@ -20,7 +20,7 @@ interface Actor {
 export class ResourceService {
   async create(input: CreateResourceDto, ownerId: string) {
     if (!(await categoryRepository.findById(input.categoryId))) {
-      throw new AppError(404, 'Categoría no encontrada', 'CATEGORY_NOT_FOUND');
+      throw new AppError(404, 'Category not found', 'CATEGORY_NOT_FOUND');
     }
     return resourceRepository.create({ ...input, ownerId });
   }
@@ -32,7 +32,7 @@ export class ResourceService {
 
   async getById(id: string) {
     const resource = await resourceRepository.findById(id);
-    if (!resource) throw new AppError(404, 'Recurso no encontrado', 'RESOURCE_NOT_FOUND');
+    if (!resource) throw new AppError(404, 'Resource not found', 'RESOURCE_NOT_FOUND');
     return resource;
   }
 
@@ -41,7 +41,7 @@ export class ResourceService {
     this.assertOwnerOrAdmin(resource.ownerId, actor);
 
     if (input.categoryId && !(await categoryRepository.findById(input.categoryId))) {
-      throw new AppError(404, 'Categoría no encontrada', 'CATEGORY_NOT_FOUND');
+      throw new AppError(404, 'Category not found', 'CATEGORY_NOT_FOUND');
     }
     return resourceRepository.update(resource, input);
   }
@@ -54,7 +54,7 @@ export class ResourceService {
 
   private assertOwnerOrAdmin(ownerId: string, actor: Actor): void {
     if (actor.role !== Role.ADMIN && actor.id !== ownerId) {
-      throw new AppError(403, 'Solo el propietario o un administrador puede modificarlo', 'FORBIDDEN');
+      throw new AppError(403, 'Only the owner or an admin can modify it', 'FORBIDDEN');
     }
   }
 }

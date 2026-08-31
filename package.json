@@ -9,7 +9,10 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/src/index.js",
     "typecheck": "tsc --noEmit",
-    "db:seed": "tsx src/database/seeders/seed.ts"
+    "db:seed": "tsx src/database/seeders/seed.ts",
+    "docker:up": "bash scripts/docker-up.sh",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f api"
   },
   "engines": {
     "node": ">=20"

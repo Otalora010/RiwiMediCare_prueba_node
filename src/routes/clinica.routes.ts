@@ -19,7 +19,7 @@ export const clinicaRouter = Router();
  *     summary: Lista clínicas activas
  *     security: [{ bearerAuth: [] }]
  *     responses:
- *       200: { description: Clínicas activas }
+ *       200: { description: Active clinics }
  *       401: { $ref: '#/components/responses/Unauthorized' }
  *   post:
  *     tags: [Clinicas]
@@ -31,7 +31,7 @@ export const clinicaRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ClinicaInput' }
  *     responses:
- *       201: { description: Clínica creada }
+ *       201: { description: Clinic created }
  *       401: { $ref: '#/components/responses/Unauthorized' }
  *       403: { $ref: '#/components/responses/Forbidden' }
  *       409: { description: NIT duplicado }
@@ -51,7 +51,7 @@ clinicaRouter
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Clínica encontrada }
+ *       200: { description: Clinic found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Clinicas]
@@ -64,7 +64,7 @@ clinicaRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ClinicaInput' }
  *     responses:
- *       200: { description: Clínica actualizada }
+ *       200: { description: Clinic updated }
  *       409: { description: NIT duplicado }
  *   delete:
  *     tags: [Clinicas]
@@ -73,7 +73,7 @@ clinicaRouter
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Clínica eliminada }
+ *       204: { description: Clinic deleted }
  */
 clinicaRouter
   .route('/:id')

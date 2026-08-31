@@ -38,7 +38,7 @@ async function seed(): Promise<void> {
 
     const [general] = await Category.findOrCreate({
       where: { name: 'General' },
-      defaults: { name: 'General', description: 'Categoría adaptable al dominio de la prueba' },
+      defaults: { name: 'General', description: 'Generic category adaptable to test domain' },
     });
     const [premium] = await Category.findOrCreate({
       where: { name: 'Premium' },
@@ -46,9 +46,9 @@ async function seed(): Promise<void> {
     });
 
     await Resource.findOrCreate({
-      where: { title: 'Recurso inicial', ownerId: user.id },
+      where: { title: 'Initial Resource', ownerId: user.id },
       defaults: {
-        title: 'Recurso inicial',
+        title: 'Initial Resource',
         description: 'Cambia este recurso por Producto, Libro, Espacio, Vehículo, etc.',
         price: 50000,
         status: ResourceStatus.ACTIVE,
@@ -57,10 +57,10 @@ async function seed(): Promise<void> {
       },
     });
     await Resource.findOrCreate({
-      where: { title: 'Recurso administrativo', ownerId: admin.id },
+      where: { title: 'Admin Resource', ownerId: admin.id },
       defaults: {
-        title: 'Recurso administrativo',
-        description: 'Dato de prueba creado por el administrador',
+        title: 'Admin Resource',
+        description: 'Test data created by admin',
         price: 100000,
         status: ResourceStatus.INACTIVE,
         categoryId: premium.id,

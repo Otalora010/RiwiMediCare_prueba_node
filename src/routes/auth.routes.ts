@@ -21,9 +21,9 @@ export const authRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/Register' }
  *     responses:
- *       201: { description: Usuario creado y token emitido }
+ *       201: { description: User created and token issued }
  *       400: { description: Datos inválidos }
- *       409: { description: El correo ya existe }
+ *       409: { description: Email already exists }
  */
 authRouter.post('/register', validateRegister, AuthController.register);
 
@@ -40,7 +40,7 @@ authRouter.post('/register', validateRegister, AuthController.register);
  *           schema: { $ref: '#/components/schemas/Login' }
  *     responses:
  *       200: { description: Sesión iniciada }
- *       401: { description: Credenciales incorrectas }
+ *       401: { description: Invalid credentials }
  */
 authRouter.post('/login', validateLogin, AuthController.login);
 

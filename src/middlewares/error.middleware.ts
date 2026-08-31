@@ -13,7 +13,7 @@ import { env } from '../config/env';
 import { AppError } from '../errors/AppError';
 
 export const notFoundHandler: RequestHandler = (req, _res, next) => {
-  next(new AppError(404, `Ruta ${req.method} ${req.originalUrl} no encontrada`, 'ROUTE_NOT_FOUND'));
+  next(new AppError(404, `Route ${req.method} ${req.originalUrl} not found`, 'ROUTE_NOT_FOUND'));
 };
 
 export const errorHandler: ErrorRequestHandler = (error, _req, res, _next): void => {
@@ -28,7 +28,7 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next): void
   if (error instanceof UniqueConstraintError) {
     res.status(409).json({
       success: false,
-      error: { code: 'DUPLICATE_VALUE', message: 'Ya existe un registro con ese valor' },
+      error: { code: 'DUPLICATE_VALUE', message: 'Record with this value already exists' },
     });
     return;
   }
@@ -36,7 +36,7 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next): void
   if (error instanceof ForeignKeyConstraintError) {
     res.status(409).json({
       success: false,
-      error: { code: 'RELATION_CONFLICT', message: 'La operación viola una relación existente' },
+      error: { code: 'RELATION_CONFLICT', message: 'Operation violates an existing relation' },
     });
     return;
   }
@@ -50,16 +50,16 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next): void
   }
 
   if (error instanceof BaseError) {
-    console.error('Error de base de datos:', error);
+    console.error('Database error:', error);
   } else {
-    console.error('Error no controlado:', error);
+    console.error('Unhandled error:', error);
   }
 
   res.status(500).json({
     success: false,
     error: {
       code: 'INTERNAL_ERROR',
-      message: 'Error interno del servidor',
+      message: 'Internal server error',
       ...(env.NODE_ENV === 'development' && { details: String(error) }),
     },
   });

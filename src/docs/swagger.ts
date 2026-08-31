@@ -12,7 +12,7 @@ export const swaggerSpec = swaggerJsdoc({
     info: {
       title: 'RiwiMediCare Plus API',
       version: '1.0.0',
-      description: 'API para gestión de solicitudes de abastecimiento de medicamentos e insumos médicos.',
+      description: 'API for managing medication supply requests.',
     },
     servers: [{ url: `http://localhost:${env.PORT}${env.API_PREFIX}` }],
     components: {
@@ -42,7 +42,7 @@ export const swaggerSpec = swaggerJsdoc({
           type: 'object',
           required: ['name', 'nit', 'responsable'],
           properties: {
-            name: { type: 'string', example: 'Clínica Central' },
+            name: { type: 'string', example: 'Central Clinic' },
             nit: { type: 'string', example: '900123456-1' },
             responsable: { type: 'string', example: 'Dra. Laura Gómez' },
             estado: { type: 'string', enum: ['ACTIVA', 'ELIMINADA'] },
@@ -52,8 +52,8 @@ export const swaggerSpec = swaggerJsdoc({
           type: 'object',
           required: ['name', 'location'],
           properties: {
-            name: { type: 'string', example: 'Almacén Central' },
-            location: { type: 'string', example: 'Bogotá - Sede Norte' },
+            name: { type: 'string', example: 'Central Warehouse' },
+            location: { type: 'string', example: 'Bogota - North Branch' },
             estado: { type: 'string', enum: ['ACTIVO', 'ELIMINADO'] },
           },
         },
@@ -61,7 +61,7 @@ export const swaggerSpec = swaggerJsdoc({
           type: 'object',
           required: ['name'],
           properties: {
-            name: { type: 'string', example: 'Categoría principal' },
+            name: { type: 'string', example: 'Main Category' },
             description: { type: 'string', nullable: true },
           },
         },
@@ -69,7 +69,7 @@ export const swaggerSpec = swaggerJsdoc({
           type: 'object',
           required: ['title', 'price', 'categoryId'],
           properties: {
-            title: { type: 'string', example: 'Recurso de ejemplo' },
+            title: { type: 'string', example: 'Sample Resource' },
             description: { type: 'string', nullable: true },
             price: { type: 'number', minimum: 0, example: 25000 },
             status: { type: 'string', enum: ['ACTIVE', 'INACTIVE'] },
@@ -91,9 +91,9 @@ export const swaggerSpec = swaggerJsdoc({
         },
       },
       responses: {
-        Unauthorized: { description: 'Token ausente, inválido o expirado' },
-        Forbidden: { description: 'El rol no tiene permisos para la operación' },
-        NotFound: { description: 'Registro no encontrado' },
+        Unauthorized: { description: 'Missing, invalid or expired token' },
+        Forbidden: { description: 'Role does not have permission for this operation' },
+        NotFound: { description: 'Record not found' },
       },
     },
   },

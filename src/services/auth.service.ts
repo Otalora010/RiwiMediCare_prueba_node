@@ -25,7 +25,7 @@ const toPublicUser = (user: User) => ({
 export class AuthService {
   async register(input: RegisterDto) {
     const existing = await userRepository.findByEmail(input.email);
-    if (existing) throw new AppError(409, 'El correo ya está registrado', 'EMAIL_IN_USE');
+    if (existing) throw new AppError(409, 'Email already registered', 'EMAIL_IN_USE');
 
     const password = await hashPassword(input.password);
     const role = input.role && Object.values(Role).includes(input.role as Role) ? (input.role as Role) : Role.GESTOR;
@@ -36,16 +36,16 @@ export class AuthService {
   async login(input: LoginDto) {
     const user = await userRepository.findByEmail(input.email, true);
     if (!user || !(await comparePassword(input.password, user.password))) {
-      throw new AppError(401, 'Credenciales incorrectas', 'INVALID_CREDENTIALS');
+      throw new AppError(401, 'Invalid credentials', 'INVALID_CREDENTIALS');
     }
-    if (!user.isActive) throw new AppError(403, 'La cuenta está inactiva', 'INACTIVE_ACCOUNT');
+    if (!user.isActive) throw new AppError(403, 'Account is inactive', 'INACTIVE_ACCOUNT');
 
     return this.buildSession(user);
   }
 
   async me(id: string) {
     const user = await userRepository.findById(id);
-    if (!user) throw new AppError(404, 'Usuario no encontrado', 'USER_NOT_FOUND');
+    if (!user) throw new AppError(404, 'User not found', 'USER_NOT_FOUND');
     return toPublicUser(user);
   }
 

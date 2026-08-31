@@ -46,7 +46,7 @@ userRouter.get('/', UserController.list);
  *             required: [role]
  *             properties: { role: { type: string, enum: [ADMIN, USER] } }
  *     responses:
- *       200: { description: Rol actualizado }
+ *       200: { description: Role updated }
  */
 userRouter.patch(
   '/:id/role',
@@ -65,6 +65,6 @@ userRouter.patch(
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Usuario eliminado }
+ *       204: { description: User deleted }
  */
 userRouter.delete('/:id', validateId, UserController.delete);

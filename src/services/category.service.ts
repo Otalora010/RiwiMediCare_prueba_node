@@ -17,7 +17,7 @@ export class CategoryService {
 
   async getById(id: string) {
     const category = await categoryRepository.findById(id);
-    if (!category) throw new AppError(404, 'Categoría no encontrada', 'CATEGORY_NOT_FOUND');
+    if (!category) throw new AppError(404, 'Category not found', 'CATEGORY_NOT_FOUND');
     return category;
   }
 

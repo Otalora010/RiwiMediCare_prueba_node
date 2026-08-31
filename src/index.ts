@@ -9,11 +9,11 @@ import { env } from './config/env';
 const start = async (): Promise<void> => {
   try {
     await sequelize.authenticate();
-    console.log('Conexión a PostgreSQL establecida');
+    console.log('PostgreSQL connection established');
 
     if (env.DB_SYNC) {
       await sequelize.sync();
-      console.log('Modelos sincronizados');
+      console.log('Models synchronized');
     }
 
     app.listen(env.PORT, () => {
@@ -21,7 +21,7 @@ const start = async (): Promise<void> => {
       console.log(`Swagger: http://localhost:${env.PORT}/api/docs`);
     });
   } catch (error) {
-    console.error('Error al iniciar la aplicación:', error);
+    console.error('Failed to start application:', error);
     process.exit(1);
   }
 };

@@ -30,7 +30,7 @@ export const almacenRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/AlmacenInput' }
  *     responses:
- *       201: { description: Almacén creado }
+ *       201: { description: Warehouse created }
  */
 almacenRouter
   .route('/')
@@ -47,7 +47,7 @@ almacenRouter
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Almacén encontrado }
+ *       200: { description: Warehouse found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Almacenes]
@@ -60,7 +60,7 @@ almacenRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/AlmacenInput' }
  *     responses:
- *       200: { description: Almacén actualizado }
+ *       200: { description: Warehouse updated }
  *   delete:
  *     tags: [Almacenes]
  *     summary: Elimina lógicamente un almacén (solo ADMIN)
@@ -68,7 +68,7 @@ almacenRouter
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Almacén eliminado }
+ *       204: { description: Warehouse deleted }
  */
 almacenRouter
   .route('/:id')
