@@ -44,6 +44,15 @@ export const swaggerSpec = swaggerJsdoc({
             estado: { type: 'string', enum: ['ACTIVA', 'ELIMINADA'] },
           },
         },
+        AlmacenInput: {
+          type: 'object',
+          required: ['name', 'location'],
+          properties: {
+            name: { type: 'string', example: 'Almacén Central' },
+            location: { type: 'string', example: 'Bogotá - Sede Norte' },
+            estado: { type: 'string', enum: ['ACTIVO', 'ELIMINADO'] },
+          },
+        },
         CategoryInput: {
           type: 'object',
           required: ['name'],

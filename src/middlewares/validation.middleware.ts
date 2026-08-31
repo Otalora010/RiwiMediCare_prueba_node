@@ -128,6 +128,26 @@ export const validateResource = (req: Request, _res: Response, next: NextFunctio
   next();
 };
 
+export const validateAlmacen = (req: Request, _res: Response, next: NextFunction): void => {
+  const isUpdate = req.method === 'PATCH';
+  const { name, location } = req.body;
+  if (isUpdate && Object.keys(req.body).length === 0) {
+    next(fail('Debes enviar al menos un campo'));
+    return;
+  }
+  if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
+    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if ((!isUpdate || location !== undefined) && (typeof location !== 'string' || location.trim().length < 2)) {
+    next(fail('La ubicación debe tener mínimo 2 caracteres'));
+    return;
+  }
+  if (typeof name === 'string') req.body.name = name.trim();
+  if (typeof location === 'string') req.body.location = location.trim();
+  next();
+};
+
 export const validateRole = (req: Request, _res: Response, next: NextFunction): void => {
   if (!Object.values(Role).includes(req.body.role)) {
     next(fail('El rol debe ser ADMIN o GESTOR'));

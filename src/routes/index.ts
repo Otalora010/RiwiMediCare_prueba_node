@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { almacenRouter } from './almacen.routes';
 import { authRouter } from './auth.routes';
 import { categoryRouter } from './category.routes';
 import { clinicaRouter } from './clinica.routes';
@@ -11,4 +12,5 @@ apiRouter.use('/auth', authRouter);
 apiRouter.use('/users', userRouter);
 apiRouter.use('/categories', categoryRouter);
 apiRouter.use('/clinicas', clinicaRouter);
+apiRouter.use('/almacenes', almacenRouter);
 apiRouter.use('/resources', resourceRouter);
