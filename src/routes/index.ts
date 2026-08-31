@@ -5,6 +5,7 @@ import { categoryRouter } from './category.routes';
 import { clinicaRouter } from './clinica.routes';
 import { medicamentoRouter } from './medicamento.routes';
 import { resourceRouter } from './resource.routes';
+import { seedRouter } from './seed.routes';
 import { solicitudRouter } from './solicitud.routes';
 import { userRouter } from './user.routes';
 
@@ -17,4 +18,5 @@ apiRouter.use('/clinicas', clinicaRouter);
 apiRouter.use('/almacenes', almacenRouter);
 apiRouter.use('/medicamentos', medicamentoRouter);
 apiRouter.use('/solicitudes', solicitudRouter);
+apiRouter.use('/seed', seedRouter);
 apiRouter.use('/resources', resourceRouter);

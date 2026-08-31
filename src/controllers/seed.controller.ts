@@ -7,8 +7,8 @@ export class SeedController {
     if (!req.file) {
       throw new AppError(400, 'Debes enviar un archivo JSON en el campo "file"', 'VALIDATION_ERROR');
     }
-    if (req.file.mimetype !== 'application/json' && !req.file.originalname.endsWith('.json')) {
-      // permitir json aunque mimetype sea text/plain etc, pero validar contenido
+    if (!req.file.originalname.endsWith('.json')) {
+      throw new AppError(400, 'El archivo debe ser JSON (.json)', 'VALIDATION_ERROR');
     }
     const payload = seedService.parseFile(req.file.buffer);
     const summary = await seedService.bulkInsert(payload);
