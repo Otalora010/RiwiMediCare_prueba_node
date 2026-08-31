@@ -1,3 +1,7 @@
+/**
+ * Medicamento controller.
+ * Handles HTTP layer for medication management.
+ */
 import { Request, Response } from 'express';
 import { CreateMedicamentoDto, UpdateMedicamentoDto } from '../dto/medicamento.dto';
 import { medicamentoService } from '../services/medicamento.service';

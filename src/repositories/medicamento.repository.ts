@@ -1,3 +1,7 @@
+/**
+ * Medicamento repository.
+ * Data access layer for Medicamento entity.
+ */
 import { CreateMedicamentoDto, UpdateMedicamentoDto } from '../dto/medicamento.dto';
 import { Almacen } from '../models/Almacen';
 import { Medicamento, MedicamentoEstado } from '../models/Medicamento';

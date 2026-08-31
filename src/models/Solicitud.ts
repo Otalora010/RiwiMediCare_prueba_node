@@ -1,3 +1,7 @@
+/**
+ * Solicitud model.
+ * Represents supply requests linking clinic, medication, warehouse and user.
+ */
 import {
   CreationOptional,
   DataTypes,

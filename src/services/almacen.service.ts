@@ -1,3 +1,7 @@
+/**
+ * Almacen service.
+ * Business logic for warehouse management with soft delete.
+ */
 import { AppError } from '../errors/AppError';
 import { CreateAlmacenDto, UpdateAlmacenDto } from '../dto/almacen.dto';
 import { AlmacenEstado } from '../models/Almacen';
@@ -14,9 +18,9 @@ export class AlmacenService {
 
   async getById(id: string) {
     const almacen = await almacenRepository.findById(id);
-    if (!almacen) throw new AppError(404, 'Almacén no encontrado', 'ALMACEN_NOT_FOUND');
+    if (!almacen) throw new AppError(404, 'Warehouse not found', 'ALMACEN_NOT_FOUND');
     if (almacen.estado === AlmacenEstado.ELIMINADO) {
-      throw new AppError(404, 'Almacén no encontrado', 'ALMACEN_NOT_FOUND');
+      throw new AppError(404, 'Warehouse not found', 'ALMACEN_NOT_FOUND');
     }
     return almacen;
   }

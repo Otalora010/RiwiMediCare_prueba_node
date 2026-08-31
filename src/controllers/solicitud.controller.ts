@@ -1,3 +1,7 @@
+/**
+ * Solicitud controller.
+ * Handles HTTP layer for supply request operations.
+ */
 import { Request, Response } from 'express';
 import { CreateSolicitudDto } from '../dto/solicitud.dto';
 import { SolicitudEstado } from '../models/Solicitud';

@@ -1,3 +1,7 @@
+/**
+ * Almacen model.
+ * Represents warehouses with location and soft delete.
+ */
 import {
   CreationOptional,
   DataTypes,

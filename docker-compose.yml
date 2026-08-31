@@ -27,7 +27,8 @@ services:
         condition: service_healthy
     environment:
       NODE_ENV: production
-      PORT: 3000
+      PORT: ${HOST_PORT:-3003}
+      HOST_PORT: ${HOST_PORT:-3003}
       API_PREFIX: /api
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
@@ -40,9 +41,9 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-4h}
       BCRYPT_ROUNDS: 10
       CORS_ORIGIN: "*"
-    # Interno siempre 3000; host usa HOST_PORT (por defecto 3003: 3000 y 3002 suelen estar ocupados)
+    # Unificado: interno y host usan el mismo HOST_PORT (default 3003) para que el log y Swagger coincidan
     ports:
-      - "${HOST_PORT:-3003}:3000"
+      - "${HOST_PORT:-3003}:${HOST_PORT:-3003}"
 
 volumes:
   postgres_data:

@@ -1,3 +1,7 @@
+/**
+ * Clinica repository.
+ * Data access layer for Clinica entity.
+ */
 import { Op } from 'sequelize';
 import { CreateClinicaDto, UpdateClinicaDto } from '../dto/clinica.dto';
 import { Clinica, ClinicaEstado } from '../models/Clinica';

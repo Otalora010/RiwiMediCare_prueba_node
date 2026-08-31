@@ -1,3 +1,7 @@
+/**
+ * Medicamento DTOs.
+ * Input shapes for medication creation and update.
+ */
 import { MedicamentoEstado } from '../models/Medicamento';
 
 export interface CreateMedicamentoDto {

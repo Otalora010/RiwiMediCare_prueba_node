@@ -1,3 +1,7 @@
+/**
+ * Solicitud DTOs.
+ * Input shapes for supply request creation and status update.
+ */
 import { SolicitudEstado } from '../models/Solicitud';
 
 export interface CreateSolicitudDto {

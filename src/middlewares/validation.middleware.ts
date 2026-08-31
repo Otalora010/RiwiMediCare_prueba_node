@@ -1,3 +1,7 @@
+/**
+ * Validation middlewares.
+ * Direct validations without external libraries.
+ */
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors/AppError';
 import { ResourceStatus } from '../models/Resource';
@@ -12,7 +16,7 @@ const fail = (message: string): AppError =>
 
 export const validateId = (req: Request, _res: Response, next: NextFunction): void => {
   if (!uuidRegex.test(String(req.params.id))) {
-    next(fail('El id debe ser un UUID válido'));
+    next(fail('Id must be a valid UUID'));
     return;
   }
   next();
@@ -21,11 +25,11 @@ export const validateId = (req: Request, _res: Response, next: NextFunction): vo
 export const validateRegister = (req: Request, _res: Response, next: NextFunction): void => {
   const { name, email, password, role } = req.body;
   if (typeof name !== 'string' || name.trim().length < 2) {
-    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    next(fail('Name must be at least 2 characters'));
     return;
   }
   if (typeof email !== 'string' || !emailRegex.test(email)) {
-    next(fail('El correo no es válido'));
+    next(fail('Email is not valid'));
     return;
   }
   if (
@@ -35,11 +39,11 @@ export const validateRegister = (req: Request, _res: Response, next: NextFunctio
     !/[a-z]/.test(password) ||
     !/[0-9]/.test(password)
   ) {
-    next(fail('La contraseña debe tener 8 caracteres, mayúscula, minúscula y número'));
+    next(fail('Password must be 8 chars with uppercase, lowercase and number'));
     return;
   }
   if (role !== undefined && !Object.values(Role).includes(role)) {
-    next(fail('El rol debe ser ADMIN o GESTOR'));
+    next(fail('Role must be ADMIN or GESTOR'));
     return;
   }
   req.body.name = name.trim();
@@ -50,7 +54,7 @@ export const validateRegister = (req: Request, _res: Response, next: NextFunctio
 export const validateLogin = (req: Request, _res: Response, next: NextFunction): void => {
   const { email, password } = req.body;
   if (typeof email !== 'string' || !emailRegex.test(email) || typeof password !== 'string') {
-    next(fail('Correo y contraseña son obligatorios'));
+    next(fail('Email and password are required'));
     return;
   }
   req.body.email = email.trim().toLowerCase();
@@ -61,19 +65,19 @@ export const validateClinica = (req: Request, _res: Response, next: NextFunction
   const isUpdate = req.method === 'PATCH';
   const { name, nit, responsable } = req.body;
   if (isUpdate && Object.keys(req.body).length === 0) {
-    next(fail('Debes enviar al menos un campo'));
+    next(fail('You must send at least one field'));
     return;
   }
   if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
-    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    next(fail('Name must be at least 2 characters'));
     return;
   }
   if ((!isUpdate || nit !== undefined) && (typeof nit !== 'string' || nit.trim().length < 3)) {
-    next(fail('El NIT debe tener mínimo 3 caracteres'));
+    next(fail('NIT must be at least 3 characters'));
     return;
   }
   if ((!isUpdate || responsable !== undefined) && (typeof responsable !== 'string' || responsable.trim().length < 2)) {
-    next(fail('El responsable debe tener mínimo 2 caracteres'));
+    next(fail('Responsible must be at least 2 characters'));
     return;
   }
   if (typeof name === 'string') req.body.name = name.trim();
@@ -86,15 +90,15 @@ export const validateCategory = (req: Request, _res: Response, next: NextFunctio
   const isUpdate = req.method === 'PATCH';
   const { name, description } = req.body;
   if (isUpdate && Object.keys(req.body).length === 0) {
-    next(fail('Debes enviar al menos un campo'));
+    next(fail('You must send at least one field'));
     return;
   }
   if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
-    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    next(fail('Name must be at least 2 characters'));
     return;
   }
   if (description !== undefined && description !== null && typeof description !== 'string') {
-    next(fail('La descripción debe ser texto'));
+    next(fail('Description must be text'));
     return;
   }
   if (typeof name === 'string') req.body.name = name.trim();
@@ -105,23 +109,23 @@ export const validateResource = (req: Request, _res: Response, next: NextFunctio
   const isUpdate = req.method === 'PATCH';
   const { title, price, status, categoryId } = req.body;
   if (isUpdate && Object.keys(req.body).length === 0) {
-    next(fail('Debes enviar al menos un campo'));
+    next(fail('You must send at least one field'));
     return;
   }
   if ((!isUpdate || title !== undefined) && (typeof title !== 'string' || title.trim().length < 2)) {
-    next(fail('El título debe tener mínimo 2 caracteres'));
+    next(fail('Title must be at least 2 characters'));
     return;
   }
   if ((!isUpdate || price !== undefined) && (!Number.isFinite(Number(price)) || Number(price) < 0)) {
-    next(fail('El precio debe ser un número mayor o igual a cero'));
+    next(fail('Price must be a number greater or equal to zero'));
     return;
   }
   if ((!isUpdate || categoryId !== undefined) && !uuidRegex.test(categoryId)) {
-    next(fail('categoryId debe ser un UUID válido'));
+    next(fail('categoryId must be a valid UUID'));
     return;
   }
   if (status !== undefined && !Object.values(ResourceStatus).includes(status)) {
-    next(fail('El estado debe ser ACTIVE o INACTIVE'));
+    next(fail('Status must be ACTIVE or INACTIVE'));
     return;
   }
   if (typeof title === 'string') req.body.title = title.trim();
@@ -133,15 +137,15 @@ export const validateAlmacen = (req: Request, _res: Response, next: NextFunction
   const isUpdate = req.method === 'PATCH';
   const { name, location } = req.body;
   if (isUpdate && Object.keys(req.body).length === 0) {
-    next(fail('Debes enviar al menos un campo'));
+    next(fail('You must send at least one field'));
     return;
   }
   if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
-    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    next(fail('Name must be at least 2 characters'));
     return;
   }
   if ((!isUpdate || location !== undefined) && (typeof location !== 'string' || location.trim().length < 2)) {
-    next(fail('La ubicación debe tener mínimo 2 caracteres'));
+    next(fail('Location must be at least 2 characters'));
     return;
   }
   if (typeof name === 'string') req.body.name = name.trim();
@@ -153,19 +157,19 @@ export const validateMedicamento = (req: Request, _res: Response, next: NextFunc
   const isUpdate = req.method === 'PATCH';
   const { name, stock, almacenId } = req.body;
   if (isUpdate && Object.keys(req.body).length === 0) {
-    next(fail('Debes enviar al menos un campo'));
+    next(fail('You must send at least one field'));
     return;
   }
   if ((!isUpdate || name !== undefined) && (typeof name !== 'string' || name.trim().length < 2)) {
-    next(fail('El nombre debe tener mínimo 2 caracteres'));
+    next(fail('Name must be at least 2 characters'));
     return;
   }
   if ((!isUpdate || stock !== undefined) && (!Number.isFinite(Number(stock)) || Number(stock) < 0)) {
-    next(fail('El stock debe ser un número mayor o igual a cero'));
+    next(fail('Stock must be a number greater or equal to zero'));
     return;
   }
   if ((!isUpdate || almacenId !== undefined) && !uuidRegex.test(String(almacenId))) {
-    next(fail('almacenId debe ser un UUID válido'));
+    next(fail('almacenId must be a valid UUID'));
     return;
   }
   if (typeof name === 'string') req.body.name = name.trim();
@@ -176,19 +180,19 @@ export const validateMedicamento = (req: Request, _res: Response, next: NextFunc
 export const validateSolicitud = (req: Request, _res: Response, next: NextFunction): void => {
   const { clinicaId, medicamentoId, almacenId, cantidadSolicitada } = req.body;
   if (typeof clinicaId !== 'string' || !uuidRegex.test(clinicaId)) {
-    next(fail('clinicaId debe ser un UUID válido'));
+    next(fail('clinicaId must be a valid UUID'));
     return;
   }
   if (typeof medicamentoId !== 'string' || !uuidRegex.test(medicamentoId)) {
-    next(fail('medicamentoId debe ser un UUID válido'));
+    next(fail('medicamentoId must be a valid UUID'));
     return;
   }
   if (typeof almacenId !== 'string' || !uuidRegex.test(almacenId)) {
-    next(fail('almacenId debe ser un UUID válido'));
+    next(fail('almacenId must be a valid UUID'));
     return;
   }
   if (!Number.isFinite(Number(cantidadSolicitada)) || Number(cantidadSolicitada) <= 0) {
-    next(fail('cantidadSolicitada debe ser un número mayor que cero'));
+    next(fail('cantidadSolicitada must be a number greater than zero'));
     return;
   }
   req.body.cantidadSolicitada = Number(cantidadSolicitada);
@@ -205,7 +209,7 @@ export const validateSolicitudEstado = (req: Request, _res: Response, next: Next
     SolicitudEstado.CANCELADA,
   ];
   if (typeof estado !== 'string' || !allowed.includes(estado as SolicitudEstado)) {
-    next(fail(`El estado debe ser uno de: ${allowed.join(', ')}`));
+    next(fail(`Status must be one of: ${allowed.join(', ')}`));
     return;
   }
   next();
@@ -213,7 +217,7 @@ export const validateSolicitudEstado = (req: Request, _res: Response, next: Next
 
 export const validateRole = (req: Request, _res: Response, next: NextFunction): void => {
   if (!Object.values(Role).includes(req.body.role)) {
-    next(fail('El rol debe ser ADMIN o GESTOR'));
+    next(fail('Role must be ADMIN or GESTOR'));
     return;
   }
   next();
@@ -222,11 +226,11 @@ export const validateRole = (req: Request, _res: Response, next: NextFunction): 
 export const validateResourceQuery = (req: Request, _res: Response, next: NextFunction): void => {
   const { status, categoryId } = req.query;
   if (status && !Object.values(ResourceStatus).includes(status as ResourceStatus)) {
-    next(fail('El filtro status debe ser ACTIVE o INACTIVE'));
+    next(fail('Filter status must be ACTIVE or INACTIVE'));
     return;
   }
   if (categoryId && !uuidRegex.test(String(categoryId))) {
-    next(fail('El filtro categoryId debe ser un UUID válido'));
+    next(fail('El filtro categoryId must be a valid UUID'));
     return;
   }
   next();

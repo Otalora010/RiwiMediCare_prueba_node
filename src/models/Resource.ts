@@ -1,3 +1,7 @@
+/**
+ * Resource model.
+ * Represents a rentable resource linked to a category and owner.
+ */
 import {
   CreationOptional,
   DataTypes,
