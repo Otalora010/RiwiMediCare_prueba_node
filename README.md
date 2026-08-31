@@ -1,74 +1,76 @@
 # RiwiMediCare Plus API
 
 **Coder:** Santiago Otalora — **Clan:** node_nest  
-**Repositorio:** https://github.com/Otalora010/RiwiMediCare_prueba_node (público)
+**Repository:** https://github.com/Otalora010/RiwiMediCare_prueba_node (public)
 
-API REST para gestionar solicitudes de abastecimiento de medicamentos e insumos médicos. Reemplaza el proceso manual (correos y hojas de cálculo) de RiwiMediCare Plus, que distribuye a clínicas y centros de atención.
+REST API to manage medication and medical-supply replenishment requests. It replaces the manual process (emails and spreadsheets) used by RiwiMediCare Plus, which distributes to clinics and care centers.
 
 ## Stack
 
-- Node.js 20, Express 5, TypeScript estricto
+- Node.js 20, Express 5, strict TypeScript
 - PostgreSQL 15, Sequelize 6
 - JWT (jsonwebtoken), bcryptjs
-- Validaciones directas (sin librerías externas)
-- Swagger/OpenAPI con swagger-jsdoc + swagger-ui-express
-- Multer para carga de seed vía archivo
-- Docker y Docker Compose
+- Direct validations (no external validation libraries)
+- Swagger/OpenAPI with swagger-jsdoc + swagger-ui-express
+- Multer for seed file upload
+- Docker and Docker Compose
 - GitFlow (main / develop / feature/*)
 
-## Arquitectura
+## Architecture
 
 ```
 Request → Routes → Middlewares → Controllers → Services → Repositories → Sequelize → PostgreSQL
 ```
 
-- `routes`: endpoints y JSDoc OpenAPI.
-- `middlewares`: `authenticate`, `authorize`, validaciones nombradas, `errorMiddleware`.
-- `controllers`: delgados, solo traducen HTTP.
-- `services`: reglas de negocio (existencia, stock, NIT único, estados).
-- `repositories`: única capa que toca Sequelize.
-- `models`: entidades y asociaciones en ambos sentidos.
-- `dto`: interfaces de entrada.
-- `docs/swagger.ts`: spec OpenAPI 3.0.3.
+- `routes`: endpoints and OpenAPI/JSDoc.
+- `middlewares`: `authenticate`, `authorize`, named validations, `errorMiddleware`.
+- `controllers`: thin, only translate HTTP.
+- `services`: business rules (existence, stock, unique NIT, states).
+- `repositories`: only layer that touches Sequelize.
+- `models`: entities and bidirectional associations.
+- `dto`: input interfaces.
+- `docs/swagger.ts`: OpenAPI 3.0.3 spec.
 
-## Entidades
+## Entities
 
-| Entidad | Campos clave |
+| Entity | Key fields |
 |---|---|
-| **User** | id UUID, name, email único, password hash, role `ADMIN` \| `GESTOR`, isActive |
-| **Clinica** | id, name, nit único, responsable, estado `ACTIVA` \| `ELIMINADA`, timestamps |
+| **User** | id UUID, name, unique email, hashed password, role `ADMIN` \| `GESTOR`, isActive |
+| **Clinica** | id, name, unique nit, responsable, estado `ACTIVA` \| `ELIMINADA`, timestamps |
 | **Almacen** | id, name, location, estado `ACTIVO` \| `ELIMINADO` |
 | **Medicamento** | id, name, stock ≥0, almacenId FK, estado `ACTIVO` \| `ELIMINADO` |
 | **Solicitud** | id, clinicaId FK, medicamentoId FK, almacenId FK, cantidadSolicitada >0, estado `PENDIENTE` \| `APROBADA` \| `RECHAZADA` \| `DESPACHADA` \| `CANCELADA` \| `ELIMINADA`, userId FK |
 
-**Relaciones (belongsTo/hasMany en ambos sentidos):**
+**Relations (belongsTo/hasMany both ways):**
 - Almacen 1:N Medicamento
 - Clinica 1:N Solicitud, Medicamento 1:N Solicitud, Almacen 1:N Solicitud, User 1:N Solicitud
 
-**Borrado lógico:** DELETE no borra, cambia `estado` a `ELIMINADA`/`ELIMINADO`.
+**Logical delete:** DELETE does not remove the row; it changes `estado` to `ELIMINADA`/`ELIMINADO`.
 
-## Roles y permisos
+## Roles and permissions
 
-| Acción | ADMIN | GESTOR | Autenticado |
+| Action | ADMIN | GESTOR | Authenticated |
 |---|---:|---:|---:|
-| CRUD Clínica (POST/PATCH/DELETE) | ✓ | ✗ | — |
-| GET Clínicas | ✓ | ✓ | ✓ |
-| CRUD Almacén | ✓ | ✗ | — |
+| CRUD Clinica (POST/PATCH/DELETE) | ✓ | ✗ | — |
+| GET Clinicas | ✓ | ✓ | ✓ |
+| CRUD Almacen | ✓ | ✗ | — |
 | CRUD Medicamento | ✓ | ✗ | — |
 | POST Solicitud | ✓ | ✓ | — |
-| PUT estado Solicitud | ✓ | ✓ | — |
-| GET activas / historial / por clínica / por id | ✓ | ✓ | ✓ |
-| DELETE Solicitud (lógico) | ✓ | ✗ | — |
+| PUT Solicitud estado | ✓ | ✓ | — |
+| GET activas / historial / by clinica / by id | ✓ | ✓ | ✓ |
+| DELETE Solicitud (logical) | ✓ | ✗ | — |
 | POST /api/seed/upload | ✓ | ✗ | — |
 
-Registro `POST /api/auth/register` es público y el usuario elige su rol (`ADMIN` o `GESTOR`). Login público. El resto requiere JWT `Bearer`.
+`POST /api/auth/register` is public and the user chooses its own role (`ADMIN` or `GESTOR`). Login is public. Everything else requires a `Bearer` JWT.
+
+> **Local port:** this environment runs on **`3001`** because `3000` is already occupied by another process. All local URLs below use `3001`. Change `PORT` in `.env` if you free `3000`.
 
 ## Endpoints
 
-| Método | Ruta | Acceso |
+| Method | Route | Access |
 |---|---|---|
-| POST | `/api/auth/register` | Público |
-| POST | `/api/auth/login` | Público |
+| POST | `/api/auth/register` | Public |
+| POST | `/api/auth/login` | Public |
 | GET | `/api/auth/me` | JWT |
 | GET | `/api/users` | ADMIN |
 | PATCH | `/api/users/:id/role` | ADMIN |
@@ -92,27 +94,29 @@ Registro `POST /api/auth/register` es público y el usuario elige su rol (`ADMIN
 | POST | `/api/solicitudes` | ADMIN, GESTOR |
 | GET | `/api/solicitudes/activas` | JWT |
 | GET | `/api/solicitudes/historial` | JWT |
-| GET | `/api/solicitudes` | JWT (alias historial) |
+| GET | `/api/solicitudes` | JWT (alias for historial) |
 | GET | `/api/solicitudes/:id` | JWT |
 | PUT | `/api/solicitudes/:id/estado` | ADMIN, GESTOR |
 | DELETE | `/api/solicitudes/:id` | ADMIN |
 | POST | `/api/seed/upload` | ADMIN (multipart) |
 
-Swagger UI: `http://localhost:3000/api/docs` — probables manualmente desde ahí.
+Swagger UI: `http://localhost:3001/api/docs/` — use it to try the API manually. The trailing `/` is required; `/api/docs` redirects to `/api/docs/`.
 
-## Variables de entorno
+## Environment variables
 
-Copia `.env.example` a `.env`:
+Copy `.env.example` to `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-Contenido de `.env.example`:
+Current `.env.example`:
 
 ```
+# RiwiMediCare Plus — copy to .env and adjust values
+# Local dev runs on 3001 because 3000 is occupied on this machine
 NODE_ENV=development
-PORT=3000
+PORT=3001
 API_PREFIX=/api
 
 POSTGRES_HOST=localhost
@@ -133,20 +137,20 @@ ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD=Admin123*
 ```
 
-## Instalación local
+## Local installation
 
-Requisitos: Node.js 20+, PostgreSQL 15+.
+Requirements: Node.js 20+, PostgreSQL 15+.
 
 ```bash
 npm install
 cp .env.example .env
-# ajusta POSTGRES_* y JWT_SECRET
+# adjust POSTGRES_* and JWT_SECRET if needed
 npm run dev
 ```
 
-API en `http://localhost:3000/api`, health `http://localhost:3000/health`, Swagger `http://localhost:3000/api/docs`.
+API at `http://localhost:3001/api`, health at `http://localhost:3001/health`, Swagger at `http://localhost:3001/api/docs/`.
 
-Build y verificación:
+Build and checks:
 
 ```bash
 npm run typecheck
@@ -156,20 +160,22 @@ npm start
 
 ## Docker
 
+The container still exposes `3000` internally (mapped to host `3000`). Local dev without Docker uses `3001` to avoid the host conflict.
+
 ```bash
 cp .env.example .env
 docker compose up --build -d
-# la API espera a que postgres esté healthy (db:5432 interno, 5436 en host)
+# the API waits for postgres to be healthy (db:5432 internally, 5436 on host)
 docker compose logs -f api
 ```
 
-Detener sin borrar datos:
+Stop without deleting data:
 
 ```bash
 docker compose down
 ```
 
-Borrar todo (incluida base):
+Delete everything (including DB):
 
 ```bash
 docker compose down -v
@@ -177,21 +183,21 @@ docker compose down -v
 
 ## Seed
 
-### Opción 1 — script clásico (sigue disponible)
+### Option 1 — classic script (still available)
 
 ```bash
 npm run db:seed
 ```
 
-Crea:
+Creates:
 - ADMIN `admin@example.com` / `Admin123*`
 - GESTOR `user@example.com` / `User123*`
 
-### Opción 2 — endpoint con multer (requisito del enunciado)
+### Option 2 — multer endpoint (required by the exercise)
 
-`POST /api/seed/upload` — solo ADMIN, `multipart/form-data`, campo `file` con JSON.
+`POST /api/seed/upload` — ADMIN only, `multipart/form-data`, field `file` with JSON.
 
-Ejemplo `seed.json`:
+Example `seed.json` (`seed.example.json` in the repo):
 
 ```json
 {
@@ -220,63 +226,63 @@ Ejemplo `seed.json`:
 }
 ```
 
-Uso con curl:
+With curl (local port 3001):
 
 ```bash
-# login como admin para obtener token
-TOKEN=$(curl -s http://localhost:3000/api/auth/login -H "Content-Type: application/json" \
+# login as admin to get a token
+TOKEN=$(curl -s http://localhost:3001/api/auth/login -H "Content-Type: application/json" \
   -d '{"email":"admin@example.com","password":"Admin123*"}' | jq -r .data.token)
 
-curl -X POST http://localhost:3000/api/seed/upload \
+curl -X POST http://localhost:3001/api/seed/upload \
   -H "Authorization: Bearer $TOKEN" \
   -F file=@seed.json
 ```
 
-Respuesta:
+Response:
 
 ```json
 { "success": true, "data": { "usuarios": 2, "clinicas": 2, "almacenes": 2, "medicamentos": 3 } }
 ```
 
-Desde Swagger UI: abre `POST /api/seed/upload`, click “Try it out”, elige el `.json` en el campo file y ejecuta con el token de un ADMIN en “Authorize”.
+From Swagger UI: open `POST /api/seed/upload`, click “Try it out”, choose the `.json` file in the `file` field and execute with an ADMIN token in “Authorize”.
 
-## Validaciones y errores
+## Validations and errors
 
-Middlewares nombrados: `validateRegister`, `validateLogin`, `validateClinica`, `validateAlmacen`, `validateMedicamento`, `validateSolicitud`, `validateSolicitudEstado`, `validateId`, `validateRole`.
+Named middlewares: `validateRegister`, `validateLogin`, `validateClinica`, `validateAlmacen`, `validateMedicamento`, `validateSolicitud`, `validateSolicitudEstado`, `validateId`, `validateRole`.
 
-Reglas:
-- NIT único (409)
-- Clínica/medicamento/almacén deben existir y no estar eliminados
-- `cantidadSolicitada > 0` y ≤ stock
-- Medicamento debe pertenecer al almacén indicado
-- Estado inicial siempre `PENDIENTE`
-- `PUT /:id/estado` solo acepta `PENDIENTE|APROBADA|RECHAZADA|DESPACHADA|CANCELADA`
-- DELETE = borrado lógico
+Rules:
+- Unique NIT (409)
+- Clinica/medicamento/almacen must exist and not be logically deleted
+- `cantidadSolicitada > 0` and ≤ stock
+- Medicamento must belong to the given almacen
+- Initial estado is always `PENDIENTE`
+- `PUT /:id/estado` only accepts `PENDIENTE|APROBADA|RECHAZADA|DESPACHADA|CANCELADA`
+- DELETE = logical delete
 
-Códigos: 400 VALIDATION, 401 UNAUTH, 403 FORBIDDEN, 404 NOT_FOUND, 409 DUPLICATE, 500 INTERNAL.
+Codes: 400 VALIDATION, 401 UNAUTH, 403 FORBIDDEN, 404 NOT_FOUND, 409 DUPLICATE, 500 INTERNAL.
 
-## Backup de BD
+## DB backup
 
-No se genera automáticamente. Para crear el dump:
+Not generated automatically. To create a dump:
 
 ```bash
 pg_dump -h localhost -p 5432 -U postgres desempeño > backup.sql
-# o dentro de Docker:
+# or inside Docker:
 docker compose exec db pg_dump -U postgres exam_db > backup.sql
 ```
 
-## Diagramas
+## Diagrams
 
-Modelo ER y flujo de solicitudes en `docs/` (si aplica) y en el Swagger. El contenedor `db` usa `postgres:15-alpine` y `api` es `node:20-alpine` multi-stage.
+ER model and request flow are in `docs/` (if applicable) and in Swagger. The `db` container uses `postgres:15-alpine` and `api` uses `node:20-alpine` multi-stage.
 
 ## Scripts
 
-| Comando | Uso |
+| Command | Usage |
 |---|---|
-| `npm run dev` | Desarrollo con recarga (tsx watch) |
-| `npm run build` | Compila TypeScript |
-| `npm start` | Ejecuta compilado |
-| `npm run typecheck` | Verifica tipos |
-| `npm run db:seed` | Seed clásico |
+| `npm run dev` | Development with reload (tsx watch) |
+| `npm run build` | Compile TypeScript |
+| `npm start` | Run compiled code |
+| `npm run typecheck` | Check types |
+| `npm run db:seed` | Classic seed |
 
-> `DB_SYNC=true` por velocidad en la prueba. En producción usar migraciones versionadas.
+> `DB_SYNC=true` for speed in the exam. In production use versioned migrations.
