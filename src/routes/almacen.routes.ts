@@ -4,7 +4,6 @@ import { authenticate } from '../middlewares/auth.middleware';
 import { authorize } from '../middlewares/role.middleware';
 import { validateAlmacen, validateId } from '../middlewares/validation.middleware';
 import { Role } from '../models/User';
-
 export const almacenRouter = Router();
 
 /**
@@ -12,13 +11,13 @@ export const almacenRouter = Router();
  * /almacenes:
  *   get:
  *     tags: [Almacenes]
- *     summary: Lista almacenes activos
+ *     summary: Lists active warehouses
  *     security: [{ bearerAuth: [] }]
  *     responses:
- *       200: { description: Almacenes activos }
+ *       200: { description: Active warehouses }
  *   post:
  *     tags: [Almacenes]
- *     summary: Crea un almacén (solo ADMIN)
+ *     summary: Creates a warehouse (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     requestBody:
  *       required: true
@@ -26,7 +25,7 @@ export const almacenRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/AlmacenInput' }
  *     responses:
- *       201: { description: Almacén creado }
+ *       201: { description: Warehouse created }
  */
 almacenRouter
   .route('/')
@@ -38,16 +37,16 @@ almacenRouter
  * /almacenes/{id}:
  *   get:
  *     tags: [Almacenes]
- *     summary: Obtiene un almacén por id
+ *     summary: Gets a warehouse by ID
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Almacén encontrado }
+ *       200: { description: Warehouse found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Almacenes]
- *     summary: Actualiza un almacén (solo ADMIN)
+ *     summary: Updates a warehouse (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
@@ -56,15 +55,15 @@ almacenRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/AlmacenInput' }
  *     responses:
- *       200: { description: Almacén actualizado }
+ *       200: { description: Warehouse updated }
  *   delete:
  *     tags: [Almacenes]
- *     summary: Elimina lógicamente un almacén (solo ADMIN)
+ *     summary: Soft deletes a warehouse (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Almacén eliminado }
+ *       204: { description: Warehouse deleted }
  */
 almacenRouter
   .route('/:id')

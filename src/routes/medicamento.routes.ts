@@ -4,7 +4,6 @@ import { authenticate } from '../middlewares/auth.middleware';
 import { authorize } from '../middlewares/role.middleware';
 import { validateId, validateMedicamento } from '../middlewares/validation.middleware';
 import { Role } from '../models/User';
-
 export const medicamentoRouter = Router();
 
 /**
@@ -12,13 +11,13 @@ export const medicamentoRouter = Router();
  * /medicamentos:
  *   get:
  *     tags: [Medicamentos]
- *     summary: Lista medicamentos activos
+ *     summary: Lists active medicines
  *     security: [{ bearerAuth: [] }]
  *     responses:
- *       200: { description: Medicamentos activos }
+ *       200: { description: Active medicines }
  *   post:
  *     tags: [Medicamentos]
- *     summary: Crea un medicamento (solo ADMIN)
+ *     summary: Creates a medicine (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     requestBody:
  *       required: true
@@ -26,7 +25,7 @@ export const medicamentoRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/MedicamentoInput' }
  *     responses:
- *       201: { description: Medicamento creado }
+ *       201: { description: Medicine created }
  */
 medicamentoRouter
   .route('/')
@@ -38,16 +37,16 @@ medicamentoRouter
  * /medicamentos/{id}:
  *   get:
  *     tags: [Medicamentos]
- *     summary: Obtiene un medicamento por id
+ *     summary: Gets a medicine by ID
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Medicamento encontrado }
+ *       200: { description: Medicine found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Medicamentos]
- *     summary: Actualiza un medicamento (solo ADMIN)
+ *     summary: Updates a medicine (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
@@ -56,15 +55,15 @@ medicamentoRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/MedicamentoInput' }
  *     responses:
- *       200: { description: Medicamento actualizado }
+ *       200: { description: Medicine updated }
  *   delete:
  *     tags: [Medicamentos]
- *     summary: Elimina lógicamente un medicamento (solo ADMIN)
+ *     summary: Soft deletes a medicine (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Medicamento eliminado }
+ *       204: { description: Medicine deleted }
  */
 medicamentoRouter
   .route('/:id')

@@ -4,7 +4,6 @@ import { SeedController } from '../controllers/seed.controller';
 import { authenticate } from '../middlewares/auth.middleware';
 import { authorize } from '../middlewares/role.middleware';
 import { Role } from '../models/User';
-
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
@@ -17,7 +16,7 @@ export const seedRouter = Router();
  * /seed/upload:
  *   post:
  *     tags: [Seed]
- *     summary: Carga datos base desde un archivo JSON (solo ADMIN, multer campo file)
+ *     summary: Uploads base data from a JSON file (ADMIN only, multer file field)
  *     security: [{ bearerAuth: [] }]
  *     requestBody:
  *       required: true
@@ -30,10 +29,10 @@ export const seedRouter = Router();
  *               file:
  *                 type: string
  *                 format: binary
- *                 description: Archivo JSON con usuarios, clínicas, almacenes y medicamentos
+ *                 description: JSON file containing users, clinics, warehouses, and medicines
  *     responses:
- *       201: { description: Datos insertados }
- *       400: { description: JSON inválido o archivo faltante }
+ *       201: { description: Data inserted }
+ *       400: { description: Invalid JSON or missing file }
  *       401: { $ref: '#/components/responses/Unauthorized' }
  *       403: { $ref: '#/components/responses/Forbidden' }
  */

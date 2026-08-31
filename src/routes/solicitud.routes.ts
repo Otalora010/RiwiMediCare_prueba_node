@@ -4,7 +4,6 @@ import { authenticate } from '../middlewares/auth.middleware';
 import { authorize } from '../middlewares/role.middleware';
 import { validateId, validateSolicitud, validateSolicitudEstado } from '../middlewares/validation.middleware';
 import { Role } from '../models/User';
-
 export const solicitudRouter = Router();
 
 /**
@@ -12,10 +11,10 @@ export const solicitudRouter = Router();
  * /solicitudes/activas:
  *   get:
  *     tags: [Solicitudes]
- *     summary: Lista solicitudes activas (PENDIENTE y APROBADA)
+ *     summary: Lists active requests (PENDIENTE and APROBADA)
  *     security: [{ bearerAuth: [] }]
  *     responses:
- *       200: { description: Solicitudes activas }
+ *       200: { description: Active requests }
  *       401: { $ref: '#/components/responses/Unauthorized' }
  */
 solicitudRouter.get('/activas', authenticate, SolicitudController.listActivas);
@@ -25,10 +24,10 @@ solicitudRouter.get('/activas', authenticate, SolicitudController.listActivas);
  * /solicitudes/historial:
  *   get:
  *     tags: [Solicitudes]
- *     summary: Historial completo de solicitudes (todas menos ELIMINADA)
+ *     summary: Complete request history (all except ELIMINADA)
  *     security: [{ bearerAuth: [] }]
  *     responses:
- *       200: { description: Historial completo }
+ *       200: { description: Complete history }
  */
 solicitudRouter.get('/historial', authenticate, SolicitudController.listHistorial);
 
@@ -37,13 +36,13 @@ solicitudRouter.get('/historial', authenticate, SolicitudController.listHistoria
  * /solicitudes:
  *   get:
  *     tags: [Solicitudes]
- *     summary: Alias de historial (compatibilidad)
+ *     summary: History alias (compatibility)
  *     security: [{ bearerAuth: [] }]
  *     responses:
- *       200: { description: Lista de solicitudes }
+ *       200: { description: Request list }
  *   post:
  *     tags: [Solicitudes]
- *     summary: Crea una solicitud (GESTOR y ADMIN)
+ *     summary: Creates a request (GESTOR and ADMIN)
  *     security: [{ bearerAuth: [] }]
  *     requestBody:
  *       required: true
@@ -51,9 +50,9 @@ solicitudRouter.get('/historial', authenticate, SolicitudController.listHistoria
  *         application/json:
  *           schema: { $ref: '#/components/schemas/SolicitudInput' }
  *     responses:
- *       201: { description: Solicitud creada }
- *       400: { description: Datos inválidos o stock insuficiente }
- *       404: { description: Clínica, medicamento o almacén no encontrado }
+ *       201: { description: Request created }
+ *       400: { description: Invalid data or insufficient stock }
+ *       404: { description: Clinic, medicine, or warehouse not found }
  */
 solicitudRouter
   .route('/')
@@ -65,21 +64,21 @@ solicitudRouter
  * /solicitudes/{id}:
  *   get:
  *     tags: [Solicitudes]
- *     summary: Obtiene una solicitud por id
+ *     summary: Gets a request by ID
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Solicitud encontrada }
+ *       200: { description: Request found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   delete:
  *     tags: [Solicitudes]
- *     summary: Elimina lógicamente una solicitud (solo ADMIN)
+ *     summary: Soft deletes a request (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Solicitud eliminada }
+ *       204: { description: Request deleted }
  *       403: { $ref: '#/components/responses/Forbidden' }
  */
 solicitudRouter
@@ -92,7 +91,7 @@ solicitudRouter
  * /solicitudes/{id}/estado:
  *   put:
  *     tags: [Solicitudes]
- *     summary: Actualiza el estado de una solicitud (GESTOR y ADMIN)
+ *     summary: Updates the status of a request (GESTOR and ADMIN)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
@@ -106,8 +105,8 @@ solicitudRouter
  *             properties:
  *               estado: { type: string, enum: [PENDIENTE, APROBADA, RECHAZADA, DESPACHADA, CANCELADA] }
  *     responses:
- *       200: { description: Estado actualizado }
- *       400: { description: Estado inválido }
+ *       200: { description: Status updated }
+ *       400: { description: Invalid status }
  */
 solicitudRouter.put(
   '/:id/estado',

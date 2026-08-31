@@ -4,7 +4,6 @@ import { authenticate } from '../middlewares/auth.middleware';
 import { authorize } from '../middlewares/role.middleware';
 import { validateId, validateRole } from '../middlewares/validation.middleware';
 import { Role } from '../models/User';
-
 export const userRouter = Router();
 userRouter.use(authenticate, authorize(Role.ADMIN));
 
@@ -13,13 +12,13 @@ userRouter.use(authenticate, authorize(Role.ADMIN));
  * /users:
  *   get:
  *     tags: [Users]
- *     summary: Lista usuarios (solo ADMIN)
+ *     summary: Lists users (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: query, name: page, schema: { type: integer, default: 1 } }
  *       - { in: query, name: limit, schema: { type: integer, default: 10 } }
  *     responses:
- *       200: { description: Lista paginada }
+ *       200: { description: Paginated list }
  *       403: { $ref: '#/components/responses/Forbidden' }
  */
 userRouter.get('/', UserController.list);
@@ -29,7 +28,7 @@ userRouter.get('/', UserController.list);
  * /users/{id}/role:
  *   patch:
  *     tags: [Users]
- *     summary: Cambia el rol de un usuario (solo ADMIN)
+ *     summary: Changes a user's role (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
@@ -42,7 +41,7 @@ userRouter.get('/', UserController.list);
  *             required: [role]
  *             properties: { role: { type: string, enum: [ADMIN, USER] } }
  *     responses:
- *       200: { description: Rol actualizado }
+ *       200: { description: Role updated }
  */
 userRouter.patch(
   '/:id/role',
@@ -56,11 +55,11 @@ userRouter.patch(
  * /users/{id}:
  *   delete:
  *     tags: [Users]
- *     summary: Elimina un usuario (solo ADMIN)
+ *     summary: Deletes a user (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Usuario eliminado }
+ *       204: { description: User deleted }
  */
 userRouter.delete('/:id', validateId, UserController.delete);

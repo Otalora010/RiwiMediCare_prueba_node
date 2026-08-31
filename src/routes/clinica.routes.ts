@@ -5,7 +5,6 @@ import { authenticate } from '../middlewares/auth.middleware';
 import { authorize } from '../middlewares/role.middleware';
 import { validateClinica, validateId } from '../middlewares/validation.middleware';
 import { Role } from '../models/User';
-
 export const clinicaRouter = Router();
 
 /**
@@ -13,14 +12,14 @@ export const clinicaRouter = Router();
  * /clinicas:
  *   get:
  *     tags: [Clinicas]
- *     summary: Lista clínicas activas
+ *     summary: Lists active clinics
  *     security: [{ bearerAuth: [] }]
  *     responses:
- *       200: { description: Clínicas activas }
+ *       200: { description: Active clinics }
  *       401: { $ref: '#/components/responses/Unauthorized' }
  *   post:
  *     tags: [Clinicas]
- *     summary: Crea una clínica (solo ADMIN)
+ *     summary: Creates a clinic (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     requestBody:
  *       required: true
@@ -28,10 +27,10 @@ export const clinicaRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ClinicaInput' }
  *     responses:
- *       201: { description: Clínica creada }
+ *       201: { description: Clinic created }
  *       401: { $ref: '#/components/responses/Unauthorized' }
  *       403: { $ref: '#/components/responses/Forbidden' }
- *       409: { description: NIT duplicado }
+ *       409: { description: Duplicate NIT }
  */
 clinicaRouter
   .route('/')
@@ -43,16 +42,16 @@ clinicaRouter
  * /clinicas/{id}:
  *   get:
  *     tags: [Clinicas]
- *     summary: Obtiene una clínica por id
+ *     summary: Gets a clinic by ID
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Clínica encontrada }
+ *       200: { description: Clinic found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Clinicas]
- *     summary: Actualiza una clínica (solo ADMIN)
+ *     summary: Updates a clinic (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
@@ -61,34 +60,35 @@ clinicaRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ClinicaInput' }
  *     responses:
- *       200: { description: Clínica actualizada }
- *       409: { description: NIT duplicado }
+ *       200: { description: Clinic updated }
+ *       409: { description: Duplicate NIT }
  *   delete:
  *     tags: [Clinicas]
- *     summary: Elimina lógicamente una clínica (solo ADMIN, estado ELIMINADA)
+ *     summary: Soft deletes a clinic (ADMIN only, ELIMINADA status)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Clínica eliminada }
+ *       204: { description: Clinic deleted }
  */
+ 
 /**
  * @openapi
  * /clinicas/{id}/solicitudes:
  *   get:
  *     tags: [Clinicas]
- *     summary: Historial de solicitudes por clínica
+ *     summary: Request history by clinic
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Historial por clínica }
+ *       200: { description: Request history by clinic }
  *       404: { $ref: '#/components/responses/NotFound' }
  */
-clinicaRouter.get('/:id/solicitudes', authenticate, validateId, SolicitudController.listByClinica);
 
+clinicaRouter.get('/\:id/solicitudes', authenticate, validateId, SolicitudController.listByClinica);
 clinicaRouter
-  .route('/:id')
+  .route('/\:id')
   .get(authenticate, validateId, ClinicaController.getById)
   .patch(authenticate, authorize(Role.ADMIN), validateId, validateClinica, ClinicaController.update)
   .delete(authenticate, authorize(Role.ADMIN), validateId, ClinicaController.delete);

@@ -4,7 +4,6 @@ import { authenticate } from '../middlewares/auth.middleware';
 import { authorize } from '../middlewares/role.middleware';
 import { validateCategory, validateId } from '../middlewares/validation.middleware';
 import { Role } from '../models/User';
-
 export const categoryRouter = Router();
 
 /**
@@ -12,12 +11,12 @@ export const categoryRouter = Router();
  * /categories:
  *   get:
  *     tags: [Categories]
- *     summary: Lista categorías
+ *     summary: Lists categories
  *     responses:
- *       200: { description: Categorías con cantidad de recursos }
+ *       200: { description: Categories with resource count }
  *   post:
  *     tags: [Categories]
- *     summary: Crea una categoría (solo ADMIN)
+ *     summary: Creates a category (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     requestBody:
  *       required: true
@@ -25,7 +24,7 @@ export const categoryRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/CategoryInput' }
  *     responses:
- *       201: { description: Categoría creada }
+ *       201: { description: Category created }
  */
 categoryRouter
   .route('/')
@@ -37,15 +36,15 @@ categoryRouter
  * /categories/{id}:
  *   get:
  *     tags: [Categories]
- *     summary: Obtiene una categoría
+ *     summary: Gets a category
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Categoría encontrada }
+ *       200: { description: Category found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Categories]
- *     summary: Actualiza una categoría (solo ADMIN)
+ *     summary: Updates a category (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
@@ -54,16 +53,16 @@ categoryRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/CategoryInput' }
  *     responses:
- *       200: { description: Categoría actualizada }
+ *       200: { description: Category updated }
  *   delete:
  *     tags: [Categories]
- *     summary: Elimina una categoría vacía (solo ADMIN)
+ *     summary: Deletes an empty category (ADMIN only)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Categoría eliminada }
- *       409: { description: La categoría contiene recursos }
+ *       204: { description: Category deleted }
+ *       409: { description: Category contains resources }
  */
 categoryRouter
   .route('/:id')

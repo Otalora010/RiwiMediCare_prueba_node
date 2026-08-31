@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller';
 import { authenticate } from '../middlewares/auth.middleware';
 import { validateLogin, validateRegister } from '../middlewares/validation.middleware';
-
 export const authRouter = Router();
 
 /**
@@ -10,16 +9,16 @@ export const authRouter = Router();
  * /auth/register:
  *   post:
  *     tags: [Auth]
- *     summary: Registra un usuario con rol USER
+ *     summary: Registers a user with the USER role
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema: { $ref: '#/components/schemas/Register' }
  *     responses:
- *       201: { description: Usuario creado y token emitido }
- *       400: { description: Datos inválidos }
- *       409: { description: El correo ya existe }
+ *       201: { description: User created and token issued }
+ *       400: { description: Invalid data }
+ *       409: { description: Email already exists }
  */
 authRouter.post('/register', validateRegister, AuthController.register);
 
@@ -28,15 +27,15 @@ authRouter.post('/register', validateRegister, AuthController.register);
  * /auth/login:
  *   post:
  *     tags: [Auth]
- *     summary: Inicia sesión y devuelve un JWT
+ *     summary: Logs in and returns a JWT
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema: { $ref: '#/components/schemas/Login' }
  *     responses:
- *       200: { description: Sesión iniciada }
- *       401: { description: Credenciales incorrectas }
+ *       200: { description: Login successful }
+ *       401: { description: Invalid credentials }
  */
 authRouter.post('/login', validateLogin, AuthController.login);
 
@@ -45,10 +44,10 @@ authRouter.post('/login', validateLogin, AuthController.login);
  * /auth/me:
  *   get:
  *     tags: [Auth]
- *     summary: Devuelve el usuario autenticado
+ *     summary: Returns the authenticated user
  *     security: [{ bearerAuth: [] }]
  *     responses:
- *       200: { description: Perfil actual }
+ *       200: { description: Current profile }
  *       401: { $ref: '#/components/responses/Unauthorized' }
  */
 authRouter.get('/me', authenticate, AuthController.me);

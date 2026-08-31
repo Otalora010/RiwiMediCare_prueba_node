@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ResourceController } from '../controllers/resource.controller';
 import { authenticate } from '../middlewares/auth.middleware';
+
 import {
   validateId,
   validateResource,
@@ -14,7 +15,7 @@ export const resourceRouter = Router();
  * /resources:
  *   get:
  *     tags: [Resources]
- *     summary: Lista recursos con filtros y paginación
+ *     summary: Lists resources with filters and pagination
  *     parameters:
  *       - { in: query, name: page, schema: { type: integer, default: 1 } }
  *       - { in: query, name: limit, schema: { type: integer, default: 10 } }
@@ -22,10 +23,10 @@ export const resourceRouter = Router();
  *       - { in: query, name: categoryId, schema: { type: string, format: uuid } }
  *       - { in: query, name: search, schema: { type: string } }
  *     responses:
- *       200: { description: Lista paginada }
+ *       200: { description: Paginated list }
  *   post:
  *     tags: [Resources]
- *     summary: Crea un recurso para el usuario autenticado
+ *     summary: Creates a resource for the authenticated user
  *     security: [{ bearerAuth: [] }]
  *     requestBody:
  *       required: true
@@ -33,7 +34,7 @@ export const resourceRouter = Router();
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ResourceInput' }
  *     responses:
- *       201: { description: Recurso creado }
+ *       201: { description: Resource created }
  */
 resourceRouter
   .route('/')
@@ -45,15 +46,15 @@ resourceRouter
  * /resources/{id}:
  *   get:
  *     tags: [Resources]
- *     summary: Obtiene un recurso con su categoría y propietario
+ *     summary: Gets a resource with its category and owner
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       200: { description: Recurso encontrado }
+ *       200: { description: Resource found }
  *       404: { $ref: '#/components/responses/NotFound' }
  *   patch:
  *     tags: [Resources]
- *     summary: Actualiza un recurso (propietario o ADMIN)
+ *     summary: Updates a resource (owner or ADMIN)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
@@ -62,16 +63,16 @@ resourceRouter
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ResourceInput' }
  *     responses:
- *       200: { description: Recurso actualizado }
+ *       200: { description: Resource updated }
  *       403: { $ref: '#/components/responses/Forbidden' }
  *   delete:
  *     tags: [Resources]
- *     summary: Elimina un recurso (propietario o ADMIN)
+ *     summary: Deletes a resource (owner or ADMIN)
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
  *     responses:
- *       204: { description: Recurso eliminado }
+ *       204: { description: Resource deleted }
  */
 resourceRouter
   .route('/:id')
