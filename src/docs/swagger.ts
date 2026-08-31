@@ -14,7 +14,7 @@ export const swaggerSpec = swaggerJsdoc({
       version: '1.0.0',
       description: 'API for managing medication supply requests.',
     },
-    servers: [{ url: `http://localhost:${env.PORT}${env.API_PREFIX}` }],
+    servers: [{ url: env.API_PREFIX }],
     components: {
       securitySchemes: {
         bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },

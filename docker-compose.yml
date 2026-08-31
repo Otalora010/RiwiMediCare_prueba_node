@@ -1,14 +1,13 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: exam-postgres
+    container_name: riwimedicare-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-exam_db}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    # PostgreSQL escucha en 5432 dentro del contenedor.
-    # 5436 es únicamente el puerto expuesto en el equipo host.
+    # PostgreSQL 5432 internal, 5436 exposed on host to avoid local instance
     ports:
       - "5436:5432"
     volumes:
@@ -21,14 +20,15 @@ services:
 
   api:
     build: .
-    container_name: exam-api
+    container_name: riwimedicare-api
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
     environment:
       NODE_ENV: production
-      PORT: 3000
+      PORT: ${HOST_PORT:-3003}
+      HOST_PORT: ${HOST_PORT:-3003}
       API_PREFIX: /api
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
@@ -41,9 +41,9 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-4h}
       BCRYPT_ROUNDS: 10
       CORS_ORIGIN: "*"
-    # Internal 3000; host uses HOST_PORT (default 3003: 3000 and 3002 are often busy)
+    # Unified: internal and host use same HOST_PORT (default 3003)
     ports:
-      - "${HOST_PORT:-3003}:3000"
+      - "${HOST_PORT:-3003}:${HOST_PORT:-3003}"
 
 volumes:
   postgres_data:
