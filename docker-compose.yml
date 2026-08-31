@@ -40,8 +40,9 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-4h}
       BCRYPT_ROUNDS: 10
       CORS_ORIGIN: "*"
+    # Interno siempre 3000; host usa HOST_PORT (por defecto 3003: 3000 y 3002 suelen estar ocupados)
     ports:
-      - "3000:3000"
+      - "${HOST_PORT:-3003}:3000"
 
 volumes:
   postgres_data:

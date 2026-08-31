@@ -7,7 +7,7 @@ const numberValue = (value: string | undefined, fallback: number): number => {
 
 export const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
-  PORT: numberValue(process.env.PORT, 3000),
+  PORT: numberValue(process.env.PORT, 3002),
   API_PREFIX: process.env.API_PREFIX || '/api',
   POSTGRES_HOST: process.env.POSTGRES_HOST || 'localhost',
   POSTGRES_PORT: numberValue(process.env.POSTGRES_PORT, 5432),

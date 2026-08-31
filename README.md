@@ -63,7 +63,7 @@ Request → Routes → Middlewares → Controllers → Services → Repositories
 
 `POST /api/auth/register` is public and the user chooses its own role (`ADMIN` or `GESTOR`). Login is public. Everything else requires a `Bearer` JWT.
 
-> **Local port:** this environment runs on **`3001`** because `3000` is already occupied by another process. All local URLs below use `3001`. Change `PORT` in `.env` if you free `3000`.
+> **Ports:** `3000` y `3002` suelen estar ocupados. Local (`npm run dev`) usa **`3002`** (`PORT=3002`). Docker escucha `3000` interno y mapea a host **`3003`** por defecto (`HOST_PORT=3003`). Deben ser distintos para correr dev y Docker a la vez. Usa `HOST_PORT=4000 docker compose up` o `npm run docker:up` (auto-detecta puerto libre) → Swagger en `http://localhost:3003/api/docs/`.
 
 ## Endpoints
 
@@ -100,7 +100,7 @@ Request → Routes → Middlewares → Controllers → Services → Repositories
 | DELETE | `/api/solicitudes/:id` | ADMIN |
 | POST | `/api/seed/upload` | ADMIN (multipart) |
 
-Swagger UI: `http://localhost:3001/api/docs/` — use it to try the API manually. The trailing `/` is required; `/api/docs` redirects to `/api/docs/`.
+Swagger UI: `http://localhost:3003/api/docs/` (Docker) / `http://localhost:3002/api/docs/` (dev sin Docker) — use it to try the API manually. The trailing `/` is required; `/api/docs` redirects to `/api/docs/`. Si usas `HOST_PORT` distinto, cambia el puerto en la URL.
 
 ## Environment variables
 
@@ -114,9 +114,12 @@ Current `.env.example`:
 
 ```
 # RiwiMediCare Plus — copy to .env and adjust values
-# Local dev runs on 3001 because 3000 is occupied on this machine
+# Local dev (npm run dev) runs on PORT (default 3002) — 3000 suele estar ocupado
+# Docker: api escucha 3000 interno, host es HOST_PORT (default 3003) -> http://localhost:3003/api/docs/
+# IMPORTANTE: HOST_PORT debe ser distinto de PORT si quieres correr dev y Docker a la vez
 NODE_ENV=development
-PORT=3001
+PORT=3002
+HOST_PORT=3003
 API_PREFIX=/api
 
 POSTGRES_HOST=localhost
@@ -148,7 +151,7 @@ cp .env.example .env
 npm run dev
 ```
 
-API at `http://localhost:3001/api`, health at `http://localhost:3001/health`, Swagger at `http://localhost:3001/api/docs/`.
+API at `http://localhost:3002/api` (dev) o `http://localhost:3003/api` (Docker), health en `/health`, Swagger en `http://localhost:3003/api/docs/` (Docker) / `http://localhost:3002/api/docs/` (dev).
 
 Build and checks:
 
@@ -160,14 +163,35 @@ npm start
 
 ## Docker
 
-The container still exposes `3000` internally (mapped to host `3000`). Local dev without Docker uses `3001` to avoid the host conflict.
+Docker escucha `3000` interno y expone `HOST_PORT` en el host (por defecto `3003` porque `3000` y `3002` suelen estar ocupados). Local sin Docker usa `PORT=3002`. Deben ser distintos para correr ambos a la vez.
 
+**Opción A — automática (recomendada, a prueba de puertos ocupados):**
+```bash
+npm run docker:up
+# o: bash scripts/docker-up.sh
+# busca el primer puerto libre entre 3003,3001,3004... y levanta
+# Swagger -> http://localhost:3003/api/docs/ (con / final)
+# health   -> http://localhost:3003/health
+```
+
+**Opción B — manual:**
 ```bash
 cp .env.example .env
 docker compose up --build -d
-# the API waits for postgres to be healthy (db:5432 internally, 5436 on host)
+# la API espera a que postgres esté healthy (db:5432 interno, 5436 en host)
 docker compose logs -f api
+# Swagger -> http://localhost:3003/api/docs/ (con / final)
+# health   -> http://localhost:3003/health
 ```
+
+Si `3003` también está ocupado, usa otro sin editar archivos:
+```bash
+HOST_PORT=4000 docker compose up --build -d
+# Swagger -> http://localhost:4000/api/docs/
+# o: HOST_PORT=4000 npm run docker:up
+```
+
+O define `HOST_PORT=3003` en tu `.env`. Verifica puertos: `ss -tulpn | grep -E '3000|3001|3002|3003'`.
 
 Stop without deleting data:
 
@@ -226,14 +250,14 @@ Example `seed.json` (`seed.example.json` in the repo):
 }
 ```
 
-With curl (local port 3001):
+With curl (Docker usa 3003, dev usa 3002 — ajusta el puerto):
 
 ```bash
-# login as admin to get a token
-TOKEN=$(curl -s http://localhost:3001/api/auth/login -H "Content-Type: application/json" \
+# login as admin to get a token (usa 3003 si estás en Docker, 3002 si es npm run dev)
+TOKEN=$(curl -s http://localhost:3003/api/auth/login -H "Content-Type: application/json" \
   -d '{"email":"admin@example.com","password":"Admin123*"}' | jq -r .data.token)
 
-curl -X POST http://localhost:3001/api/seed/upload \
+curl -X POST http://localhost:3003/api/seed/upload \
   -H "Authorization: Bearer $TOKEN" \
   -F file=@seed.json
 ```
@@ -279,10 +303,13 @@ ER model and request flow are in `docs/` (if applicable) and in Swagger. The `db
 
 | Command | Usage |
 |---|---|
-| `npm run dev` | Development with reload (tsx watch) |
+| `npm run dev` | Development with reload (tsx watch) (`3002`) |
 | `npm run build` | Compile TypeScript |
 | `npm start` | Run compiled code |
 | `npm run typecheck` | Check types |
 | `npm run db:seed` | Classic seed |
+| `npm run docker:up` | Docker con auto-detección de puerto libre → `3003:/api/docs/` |
+| `npm run docker:down` | `docker compose down` |
+| `npm run docker:logs` | `docker compose logs -f api` |
 
 > `DB_SYNC=true` for speed in the exam. In production use versioned migrations.
