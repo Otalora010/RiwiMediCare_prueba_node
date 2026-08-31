@@ -1,3 +1,7 @@
+/**
+ * Almacen controller.
+ * Translates HTTP requests to service calls for warehouse management.
+ */
 import { Request, Response } from 'express';
 import { CreateAlmacenDto, UpdateAlmacenDto } from '../dto/almacen.dto';
 import { almacenService } from '../services/almacen.service';

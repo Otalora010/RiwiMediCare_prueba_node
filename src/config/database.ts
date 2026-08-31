@@ -1,3 +1,7 @@
+/**
+ * Database configuration.
+ * Initializes Sequelize instance for PostgreSQL with shared model options.
+ */
 import { Sequelize } from 'sequelize';
 import { env } from './env';
 

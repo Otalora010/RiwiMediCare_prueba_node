@@ -1,3 +1,7 @@
+/**
+ * Medicamento model.
+ * Represents medications linked to a warehouse with stock management.
+ */
 import {
   CreationOptional,
   DataTypes,

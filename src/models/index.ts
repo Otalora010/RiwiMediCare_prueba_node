@@ -1,3 +1,7 @@
+/**
+ * Model registry.
+ * Initializes associations between all entities.
+ */
 import { Almacen } from './Almacen';
 import { Category } from './Category';
 import { Clinica } from './Clinica';

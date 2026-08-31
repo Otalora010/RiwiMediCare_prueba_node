@@ -1,3 +1,7 @@
+/**
+ * Clinica DTOs.
+ * Input shapes for clinic creation and update.
+ */
 import { ClinicaEstado } from '../models/Clinica';
 
 export interface CreateClinicaDto {

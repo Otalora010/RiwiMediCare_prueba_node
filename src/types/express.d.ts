@@ -1,3 +1,7 @@
+/**
+ * Express type augmentations.
+ * Extends Request with authenticated user info.
+ */
 import type { Role } from '../models/User';
 
 declare global {

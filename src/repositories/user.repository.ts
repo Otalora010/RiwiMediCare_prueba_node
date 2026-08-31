@@ -1,3 +1,7 @@
+/**
+ * User repository.
+ * Data access layer for User entity.
+ */
 import { User } from '../models/User';
 
 export class UserRepository {

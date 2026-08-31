@@ -1,3 +1,7 @@
+/**
+ * JWT utilities.
+ * Creation and verification of access tokens.
+ */
 import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken';
 import { env } from '../config/env';
 import { Role } from '../models/User';

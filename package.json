@@ -2,14 +2,17 @@
   "name": "backend-exam-template",
   "version": "1.0.0",
   "private": true,
-  "description": "Plantilla reutilizable para pruebas de desempeño backend con Node.js, TypeScript, Express, Sequelize y PostgreSQL.",
+  "description": "Plantilla reutilizable para pruebas de desempe\u00f1o backend con Node.js, TypeScript, Express, Sequelize y PostgreSQL.",
   "main": "dist/src/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/src/index.js",
     "typecheck": "tsc --noEmit",
-    "db:seed": "tsx src/database/seeders/seed.ts"
+    "db:seed": "tsx src/database/seeders/seed.ts",
+    "docker:up": "bash scripts/docker-up.sh",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f api"
   },
   "engines": {
     "node": ">=20"

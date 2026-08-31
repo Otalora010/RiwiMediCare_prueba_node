@@ -1,3 +1,7 @@
+/**
+ * User service.
+ * Business logic for user management and role updates.
+ */
 import { AppError } from '../errors/AppError';
 import { userRepository } from '../repositories/user.repository';
 import { getPaginationMeta } from '../utils/pagination';
@@ -14,7 +18,7 @@ export class UserService {
       throw new AppError(409, 'No puedes cambiar tu propio rol', 'SELF_ROLE_CHANGE');
     }
     const user = await userRepository.findById(id);
-    if (!user) throw new AppError(404, 'Usuario no encontrado', 'USER_NOT_FOUND');
+    if (!user) throw new AppError(404, 'User not found', 'USER_NOT_FOUND');
     return userRepository.updateRole(user, role);
   }
 
@@ -23,7 +27,7 @@ export class UserService {
       throw new AppError(409, 'No puedes eliminar tu propia cuenta', 'SELF_DELETE');
     }
     const user = await userRepository.findById(id);
-    if (!user) throw new AppError(404, 'Usuario no encontrado', 'USER_NOT_FOUND');
+    if (!user) throw new AppError(404, 'User not found', 'USER_NOT_FOUND');
     await userRepository.delete(user);
   }
 }
