@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors/AppError';
 import { ResourceStatus } from '../models/Resource';
+import { SolicitudEstado } from '../models/Solicitud';
 import { Role } from '../models/User';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -169,6 +170,44 @@ export const validateMedicamento = (req: Request, _res: Response, next: NextFunc
   }
   if (typeof name === 'string') req.body.name = name.trim();
   if (stock !== undefined) req.body.stock = Number(stock);
+  next();
+};
+
+export const validateSolicitud = (req: Request, _res: Response, next: NextFunction): void => {
+  const { clinicaId, medicamentoId, almacenId, cantidadSolicitada } = req.body;
+  if (typeof clinicaId !== 'string' || !uuidRegex.test(clinicaId)) {
+    next(fail('clinicaId debe ser un UUID válido'));
+    return;
+  }
+  if (typeof medicamentoId !== 'string' || !uuidRegex.test(medicamentoId)) {
+    next(fail('medicamentoId debe ser un UUID válido'));
+    return;
+  }
+  if (typeof almacenId !== 'string' || !uuidRegex.test(almacenId)) {
+    next(fail('almacenId debe ser un UUID válido'));
+    return;
+  }
+  if (!Number.isFinite(Number(cantidadSolicitada)) || Number(cantidadSolicitada) <= 0) {
+    next(fail('cantidadSolicitada debe ser un número mayor que cero'));
+    return;
+  }
+  req.body.cantidadSolicitada = Number(cantidadSolicitada);
+  next();
+};
+
+export const validateSolicitudEstado = (req: Request, _res: Response, next: NextFunction): void => {
+  const { estado } = req.body;
+  const allowed = [
+    SolicitudEstado.PENDIENTE,
+    SolicitudEstado.APROBADA,
+    SolicitudEstado.RECHAZADA,
+    SolicitudEstado.DESPACHADA,
+    SolicitudEstado.CANCELADA,
+  ];
+  if (typeof estado !== 'string' || !allowed.includes(estado as SolicitudEstado)) {
+    next(fail(`El estado debe ser uno de: ${allowed.join(', ')}`));
+    return;
+  }
   next();
 };
 

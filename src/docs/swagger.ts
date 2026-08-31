@@ -63,6 +63,24 @@ export const swaggerSpec = swaggerJsdoc({
             estado: { type: 'string', enum: ['ACTIVO', 'ELIMINADO'] },
           },
         },
+        SolicitudInput: {
+          type: 'object',
+          required: ['clinicaId', 'medicamentoId', 'almacenId', 'cantidadSolicitada'],
+          properties: {
+            clinicaId: { type: 'string', format: 'uuid' },
+            medicamentoId: { type: 'string', format: 'uuid' },
+            almacenId: { type: 'string', format: 'uuid' },
+            cantidadSolicitada: { type: 'number', minimum: 1, example: 10 },
+            estado: { type: 'string', enum: ['PENDIENTE'], example: 'PENDIENTE' },
+          },
+        },
+        SolicitudEstadoInput: {
+          type: 'object',
+          required: ['estado'],
+          properties: {
+            estado: { type: 'string', enum: ['PENDIENTE', 'APROBADA', 'RECHAZADA', 'DESPACHADA', 'CANCELADA'] },
+          },
+        },
         CategoryInput: {
           type: 'object',
           required: ['name'],
