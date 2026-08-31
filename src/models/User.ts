@@ -11,7 +11,7 @@ import type { Resource } from './Resource';
 
 export enum Role {
   ADMIN = 'ADMIN',
-  USER = 'USER',
+  GESTOR = 'GESTOR',
 }
 
 export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
@@ -50,7 +50,7 @@ User.init(
     role: {
       type: DataTypes.ENUM(...Object.values(Role)),
       allowNull: false,
-      defaultValue: Role.USER,
+      defaultValue: Role.GESTOR,
     },
     isActive: {
       type: DataTypes.BOOLEAN,

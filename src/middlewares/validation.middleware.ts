@@ -101,7 +101,7 @@ export const validateResource = (req: Request, _res: Response, next: NextFunctio
 
 export const validateRole = (req: Request, _res: Response, next: NextFunction): void => {
   if (!Object.values(Role).includes(req.body.role)) {
-    next(fail('El rol debe ser ADMIN o USER'));
+    next(fail('El rol debe ser ADMIN o GESTOR'));
     return;
   }
   next();

@@ -1,4 +1,5 @@
 import { Category } from './Category';
+import { Clinica } from './Clinica';
 import { Resource } from './Resource';
 import { User } from './User';
 
@@ -8,4 +9,4 @@ Resource.belongsTo(User, { foreignKey: 'ownerId', as: 'owner' });
 Category.hasMany(Resource, { foreignKey: 'categoryId', as: 'resources' });
 Resource.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
 
-export { Category, Resource, User };
+export { Category, Clinica, Resource, User };
