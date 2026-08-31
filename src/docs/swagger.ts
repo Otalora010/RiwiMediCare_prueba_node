@@ -53,6 +53,16 @@ export const swaggerSpec = swaggerJsdoc({
             estado: { type: 'string', enum: ['ACTIVO', 'ELIMINADO'] },
           },
         },
+        MedicamentoInput: {
+          type: 'object',
+          required: ['name', 'stock', 'almacenId'],
+          properties: {
+            name: { type: 'string', example: 'Acetaminofén 500mg' },
+            stock: { type: 'number', minimum: 0, example: 150 },
+            almacenId: { type: 'string', format: 'uuid' },
+            estado: { type: 'string', enum: ['ACTIVO', 'ELIMINADO'] },
+          },
+        },
         CategoryInput: {
           type: 'object',
           required: ['name'],
