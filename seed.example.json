@@ -5,7 +5,8 @@
   ],
   "clinicas": [
     { "name": "Clínica Norte", "nit": "900123456-1", "responsable": "Dra. Laura Gómez" },
-    { "name": "Centro Sur", "nit": "900123456-2", "responsable": "Dr. Carlos Ruiz" }
+    { "name": "Centro Sur", "nit": "900123456-2", "responsable": "Dr. Carlos Ruiz" },
+    { "name": "Centro Norte", "nit": "900123456-3", "responsable": "Dr. José Martínez" }
   ],
   "almacenes": [
     {
